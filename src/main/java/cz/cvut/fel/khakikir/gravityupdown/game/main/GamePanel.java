@@ -98,6 +98,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 
     private void update(long delta) {
         gsm.update(delta);
+        Keys.update();
     }
 
     private void draw() {
@@ -116,17 +117,16 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
     /* Keyboard events (KeyListener methods) */
     @Override
     public void keyTyped(KeyEvent e) {
-
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
-
+        Keys.setState(e.getKeyCode(), true);
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-
+        Keys.setState(e.getKeyCode(), false);
     }
 
 
