@@ -1,4 +1,7 @@
-package cz.cvut.fel.khakikir.gravityupdown.main;
+package cz.cvut.fel.khakikir.gravityupdown.game.main;
+
+import cz.cvut.fel.khakikir.gravityupdown.engine.gamestate.GameStateManager;
+import cz.cvut.fel.khakikir.gravityupdown.engine.handler.Keys;
 
 import javax.swing.*;
 import java.awt.*;
@@ -6,16 +9,18 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
 
 public class GamePanel extends JPanel implements Runnable, KeyListener, MouseListener {
-    private static final int WINDOW_WIDTH = 320;
-    private static final int WINDOW_HEIGHT = 240;
-    private static final int WINDOW_SCALE = 1;
+    public static final int WINDOW_WIDTH = 320;
+    public static final int WINDOW_HEIGHT = 240;
+    public static final int WINDOW_SCALE = 2;
 
     private Thread thread;
     private boolean running; // TODO: Should be volatile?
     private static final int FPS = 60;
     private static final long FRAME_TARGET_TIME = 1000 / FPS; // in milliseconds
+    private static float instantFps;
 
     // for off-screen rendering
     private BufferedImage bufferedImage;
@@ -32,10 +37,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
     @Override
     public void addNotify() {
         super.addNotify();
-        start();
-    }
-
-    private void start() {
         if (thread == null) {
             addKeyListener(this);
             addMouseListener(this);
@@ -90,7 +91,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
      * @param delta The elapsed time from the previous frame in nanoseconds.
      */
     private void handle(long now, long delta) {
-        // float instant_fps = 1_000_000_000.0f / delta;
+        instantFps = 1_000_000_000.0f / delta;
         // System.out.println(instant_fps);
         update(delta);
         draw();
@@ -112,6 +113,11 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         g.drawImage(bufferedImage, 0, 0,
                 WINDOW_WIDTH * WINDOW_SCALE, WINDOW_HEIGHT * WINDOW_SCALE,
                 null);
+    }
+
+    /* Getters */
+    public static float getInstantFps() {
+        return instantFps;
     }
 
     /* Keyboard events (KeyListener methods) */
