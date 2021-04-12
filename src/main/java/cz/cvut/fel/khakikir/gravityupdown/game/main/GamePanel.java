@@ -17,6 +17,12 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
     private static final int FPS = 60;
     private static final long FRAME_TARGET_TIME = 1000 / FPS; // in milliseconds
 
+    // for off-screen rendering
+    private BufferedImage bufferedImage;
+    private Graphics2D graphics;
+
+    private GameStateManager gsm;
+
     public GamePanel() {
         setPreferredSize(new Dimension(WINDOW_WIDTH * WINDOW_SCALE, WINDOW_HEIGHT * WINDOW_SCALE));
         setFocusable(true);
@@ -40,6 +46,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 
     private void initialize() {
         System.out.println("GamePanel initialization");
+        bufferedImage = new BufferedImage(WINDOW_WIDTH, WINDOW_HEIGHT, BufferedImage.TYPE_INT_RGB);
+        graphics = (Graphics2D) bufferedImage.getGraphics();
+        gsm = new GameStateManager();
         running = true;
     }
 
@@ -88,11 +97,20 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
     }
 
     private void update(long delta) {
-
+        gsm.update(delta);
     }
 
     private void draw() {
+        gsm.draw(graphics); // render frame off-screen
+        repaint(); // calls paintComponent(Graphics g)
+    }
 
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.drawImage(bufferedImage, 0, 0,
+                WINDOW_WIDTH * WINDOW_SCALE, WINDOW_HEIGHT * WINDOW_SCALE,
+                null);
     }
 
     /* Keyboard events (KeyListener methods) */

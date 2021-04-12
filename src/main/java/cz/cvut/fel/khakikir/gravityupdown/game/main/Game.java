@@ -1,4 +1,4 @@
-package cz.cvut.fel.khakikir.gravityupdown.main;
+package cz.cvut.fel.khakikir.gravityupdown.game.main;
 
 import javax.swing.*;
 
