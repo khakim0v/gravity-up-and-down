@@ -1,5 +1,7 @@
 package cz.cvut.fel.khakikir.gravityupdown.game.gamestate;
 
+import cz.cvut.fel.khakikir.gravityupdown.engine.Time;
+import cz.cvut.fel.khakikir.gravityupdown.engine.entity.Backdrop;
 import cz.cvut.fel.khakikir.gravityupdown.engine.gamestate.GameState;
 import cz.cvut.fel.khakikir.gravityupdown.engine.gamestate.GameStateManager;
 import cz.cvut.fel.khakikir.gravityupdown.game.main.GamePanel;
@@ -15,6 +17,8 @@ public class MainMenu extends GameState {
             "Quit",
     };
 
+    private Backdrop backdrop;
+
     private Color titleColor;
     private Font titleFont;
     private Font font;
@@ -26,6 +30,8 @@ public class MainMenu extends GameState {
 
     @Override
     public void init() {
+        backdrop = new Backdrop("/images/backdrop.png");
+        backdrop.setVelocity(20, 20);
         titleColor = Color.WHITE;
         titleFont = new Font("Times New Roman", Font.PLAIN, 28);
         font = new Font("Arial", Font.PLAIN, 14);
@@ -35,12 +41,12 @@ public class MainMenu extends GameState {
     @Override
     public void update() {
         handleInput();
+        backdrop.update();
     }
 
     @Override
     public void draw(Graphics2D g) {
-        g.setColor(Color.BLACK);
-        g.fillRect(0, 0, GamePanel.WINDOW_WIDTH, GamePanel.WINDOW_HEIGHT);
+        backdrop.draw(g);
 
         // draw title
         g.setColor(titleColor);
