@@ -18,7 +18,7 @@ public abstract class MapObject {
         this.position.setLocation(x, y);
     }
 
-    protected abstract boolean isOutsideScreen();
+    public abstract void update();
 
     public abstract void draw(Graphics2D g);
 }

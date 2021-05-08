@@ -11,9 +11,9 @@ public class GameStateManager {
         this.gameState = new MainMenu(this);
     }
 
-    public void update(long delta) {
+    public void update() {
         if (gameState != null) {
-            gameState.update(delta);
+            gameState.update();
         }
     }
 

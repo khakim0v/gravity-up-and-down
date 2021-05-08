@@ -1,5 +1,6 @@
 package cz.cvut.fel.khakikir.gravityupdown.game.main;
 
+import cz.cvut.fel.khakikir.gravityupdown.engine.Time;
 import cz.cvut.fel.khakikir.gravityupdown.engine.gamestate.GameStateManager;
 import cz.cvut.fel.khakikir.gravityupdown.engine.handler.Keys;
 
@@ -16,11 +17,11 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
     public static final int WINDOW_HEIGHT = 240;
     public static final int WINDOW_SCALE = 2;
 
-    private Thread thread;
-    private boolean running; // TODO: Should be volatile?
     private static final int FPS = 60;
     private static final long FRAME_TARGET_TIME = 1000 / FPS; // in milliseconds
-    private static float instantFps;
+
+    private Thread thread;
+    private boolean running; // TODO: Should be volatile?
 
     // for off-screen rendering
     private BufferedImage bufferedImage;
@@ -59,21 +60,31 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         initialize();
 
         // time and timestamp variables in nanoseconds
-        long lastTimestamp = System.nanoTime();
-        long currentTimestamp;
-        long waitTime;
-        long deltaTime;
-        long frameTime;
+        long currentTime = System.nanoTime();
+        final double dt = 1.0 / 60.0;
 
         System.out.println("Game loop starting");
         while (running) { // game loop
-            currentTimestamp = System.nanoTime();
-            deltaTime = currentTimestamp - lastTimestamp; // Should it be the time from the end of last frame?
-            handle(currentTimestamp, deltaTime);
-            frameTime = System.nanoTime() - currentTimestamp;
-            lastTimestamp = currentTimestamp;
-            
-            waitTime = FRAME_TARGET_TIME - (frameTime / 1_000_000);
+            long newTime = System.nanoTime();
+            double sinceLastFrameTime = (double) (newTime - currentTime) / 1_000_000_000;
+
+            // Calculate FPS
+            double alpha = 0.9;
+            Time.instantFps = 1_000_000_000.0d / (newTime - currentTime);
+            Time.averageFps = alpha * Time.averageFps + (1.0 - alpha) * Time.instantFps;
+
+            currentTime = newTime;
+
+            while (sinceLastFrameTime > 0.0) {
+                double deltaTime = Math.min(sinceLastFrameTime, dt);
+                update(deltaTime);
+                sinceLastFrameTime -= deltaTime;
+            }
+
+            draw();
+
+            long frameTime = System.nanoTime() - newTime;
+            long waitTime = FRAME_TARGET_TIME - (frameTime / 1_000_000);
             if (waitTime > 0) {
                 try {
                     Thread.sleep(waitTime);
@@ -85,20 +96,13 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
     }
 
     /**
-     * This method is going to be called in every frame.
+     * Method to update the physics.
      *
-     * @param now   The timestamp of the current frame given in nanoseconds.
-     * @param delta The elapsed time from the previous frame in nanoseconds.
+     * @param delta The delta time in seconds.
      */
-    private void handle(long now, long delta) {
-        instantFps = 1_000_000_000.0f / delta;
-        // System.out.println(instant_fps);
-        update(delta);
-        draw();
-    }
-
-    private void update(long delta) {
-        gsm.update(delta);
+    private void update(double delta) {
+        Time.deltaTime = delta;
+        gsm.update();
         Keys.update();
     }
 
@@ -115,11 +119,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
                 null);
     }
 
-    /* Getters */
-    public static float getInstantFps() {
-        return instantFps;
-    }
-
     /* Keyboard events (KeyListener methods) */
     @Override
     public void keyTyped(KeyEvent e) {
@@ -134,7 +133,6 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
     public void keyReleased(KeyEvent e) {
         Keys.setState(e.getKeyCode(), false);
     }
-
 
     /* Mouse events (MouseListener methods) */
     @Override

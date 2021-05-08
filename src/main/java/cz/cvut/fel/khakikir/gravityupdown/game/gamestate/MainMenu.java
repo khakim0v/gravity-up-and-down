@@ -33,7 +33,7 @@ public class MainMenu extends GameState {
     }
 
     @Override
-    public void update(long delta) {
+    public void update() {
         handleInput();
     }
 
@@ -57,7 +57,7 @@ public class MainMenu extends GameState {
         // other
         g.setFont(font2);
         g.drawString("2021 Kirill Khakimov", 10, 232);
-        g.drawString(String.format("FPS: %.2f", GamePanel.getInstantFps()), 260, 232);
+        g.drawString(String.format("FPS: %.2f", Time.averageFps), 260, 232);
     }
 
     @Override
