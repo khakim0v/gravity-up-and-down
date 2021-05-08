@@ -1,21 +1,36 @@
 package cz.cvut.fel.khakikir.gravityupdown.engine.entity;
 
+import cz.cvut.fel.khakikir.gravityupdown.engine.Vec2D;
+
 import java.awt.*;
-import java.awt.geom.Point2D;
 
 public abstract class MapObject {
-    protected Point2D position;
+    protected Vec2D position;
+    protected Vec2D velocity;
 
-    protected Point2D getPosition() {
-        return position;
-    }
-
-    protected void setPosition(Point2D position) {
-        this.position = position;
+    protected MapObject() {
+        this.position = new Vec2D(0, 0);
+        this.velocity = new Vec2D(0, 0);
     }
 
     protected void setPosition(double x, double y) {
-        this.position.setLocation(x, y);
+        this.position.set(x, y);
+    }
+
+    protected void translatePosition(double dx, double dy) {
+        position.set(position.getX() + dx, position.getY() + dy);
+    }
+
+    public void setVelocity(double x, double y) {
+        this.velocity.set(x, y);
+    }
+
+    protected void translateVelocity(double dx, double dy) {
+        velocity.set(velocity.getX() + dx, velocity.getY() + dy);
+    }
+
+    protected boolean isOutsideScreen() {
+        return false;
     }
 
     public abstract void update();
