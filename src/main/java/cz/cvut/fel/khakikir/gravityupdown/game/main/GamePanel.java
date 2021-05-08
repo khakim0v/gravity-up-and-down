@@ -4,6 +4,7 @@ import cz.cvut.fel.khakikir.gravityupdown.engine.Time;
 import cz.cvut.fel.khakikir.gravityupdown.engine.gamestate.GameStateManager;
 import cz.cvut.fel.khakikir.gravityupdown.engine.handler.Keys;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -11,6 +12,8 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class GamePanel extends JPanel implements Runnable, KeyListener, MouseListener {
     public static final int WINDOW_WIDTH = 320;
@@ -52,6 +55,19 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         graphics = (Graphics2D) bufferedImage.getGraphics();
         gsm = new GameStateManager();
         running = true;
+        setCustomCursor();
+    }
+
+    private void setCustomCursor() {
+        Toolkit toolkit = Toolkit.getDefaultToolkit();
+        try {
+            InputStream stream = GamePanel.class.getResourceAsStream("/images/cursor.png");
+            BufferedImage image = ImageIO.read(stream);
+            Cursor cursor = toolkit.createCustomCursor(image, new Point(0, 0), "Pixel Cursor");
+            setCursor(cursor);
+        } catch (IOException e) {
+            e.printStackTrace(); // FIXME
+        }
     }
 
     @Override
