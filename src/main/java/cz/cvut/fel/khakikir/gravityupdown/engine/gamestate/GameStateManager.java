@@ -5,21 +5,24 @@ import cz.cvut.fel.khakikir.gravityupdown.game.gamestate.MainMenu;
 import java.awt.*;
 
 public class GameStateManager {
-    private GameState gameState;
+    private GameState currentState;
 
     public GameStateManager() {
-        this.gameState = new MainMenu(this);
+        this.currentState = new MainMenu(this); }
+
+    public void setState(GameState state) {
+        currentState = state;
     }
 
     public void update() {
-        if (gameState != null) {
-            gameState.update();
+        if (currentState != null) {
+            currentState.update();
         }
     }
 
     public void draw(Graphics2D g) {
-        if (gameState != null) {
-            gameState.draw(g);
+        if (currentState != null) {
+            currentState.draw(g);
         }
     }
 }
