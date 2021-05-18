@@ -40,7 +40,7 @@ public class MainMenu extends GameState {
 
     @Override
     public void update() {
-        handleInput();
+        super.update();
         backdrop.update();
     }
 
