@@ -1,6 +1,8 @@
 package cz.cvut.fel.khakikir.gravityupdown.game.main;
 
+import cz.cvut.fel.khakikir.gravityupdown.engine.Engine;
 import cz.cvut.fel.khakikir.gravityupdown.engine.Time;
+import cz.cvut.fel.khakikir.gravityupdown.engine.entity.Camera;
 import cz.cvut.fel.khakikir.gravityupdown.engine.gamestate.GameStateManager;
 import cz.cvut.fel.khakikir.gravityupdown.engine.handler.Keys;
 
@@ -54,8 +56,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         bufferedImage = new BufferedImage(WINDOW_WIDTH, WINDOW_HEIGHT, BufferedImage.TYPE_INT_RGB);
         graphics = (Graphics2D) bufferedImage.getGraphics();
         gsm = new GameStateManager();
-        running = true;
+        Engine.camera = new Camera(GamePanel.WINDOW_WIDTH, GamePanel.WINDOW_HEIGHT);
         setCustomCursor();
+        running = true;
     }
 
     private void setCustomCursor() {
@@ -119,6 +122,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
     private void update(double delta) {
         Time.deltaTime = delta;
         gsm.update();
+        Engine.camera.update();
         Keys.update();
     }
 
