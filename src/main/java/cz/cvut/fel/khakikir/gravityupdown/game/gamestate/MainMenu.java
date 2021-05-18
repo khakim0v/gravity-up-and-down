@@ -1,12 +1,15 @@
 package cz.cvut.fel.khakikir.gravityupdown.game.gamestate;
 
 import cz.cvut.fel.khakikir.gravityupdown.engine.Time;
+import cz.cvut.fel.khakikir.gravityupdown.engine.asset.audio.AudioPlayer;
 import cz.cvut.fel.khakikir.gravityupdown.engine.entity.Backdrop;
 import cz.cvut.fel.khakikir.gravityupdown.engine.gamestate.GameState;
 import cz.cvut.fel.khakikir.gravityupdown.engine.gamestate.GameStateManager;
-import cz.cvut.fel.khakikir.gravityupdown.game.main.GamePanel;
+import cz.cvut.fel.khakikir.gravityupdown.engine.handler.Keys;
+import cz.cvut.fel.khakikir.gravityupdown.game.audio.SFX;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 
 public class MainMenu extends GameState {
     private final String[] options = {
@@ -24,6 +27,8 @@ public class MainMenu extends GameState {
     private Font font;
     private Font font2;
 
+    private boolean isMuted;
+
     public MainMenu(GameStateManager gsm) {
         super(gsm);
     }
@@ -36,6 +41,9 @@ public class MainMenu extends GameState {
         titleFont = new Font("Times New Roman", Font.PLAIN, 28);
         font = new Font("Arial", Font.PLAIN, 14);
         font2 = new Font("Arial", Font.PLAIN, 10);
+
+        AudioPlayer.load(SFX.MUSIC_BIT.getName(), SFX.MUSIC_BIT.getPath());
+        AudioPlayer.loop(SFX.MUSIC_BIT.getName());
     }
 
     @Override
@@ -68,6 +76,13 @@ public class MainMenu extends GameState {
 
     @Override
     public void handleInput() {
-
+        // TODO: REMOVE!
+        if (Keys.wasJustPressed(KeyEvent.VK_M)) {
+            System.out.println("VK_M was just pressed!");
+            isMuted = !isMuted;
+            AudioPlayer.setMuted(isMuted);
+        } else if (Keys.wasJustPressed(KeyEvent.VK_S)) {
+            // gsm.setState(new LevelState(gsm));
+        }
     }
 }
