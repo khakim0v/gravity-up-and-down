@@ -1,22 +1,27 @@
 package cz.cvut.fel.khakikir.gravityupdown.engine.tile;
 
-import cz.cvut.fel.khakikir.gravityupdown.engine.entity.MapBasic;
+import cz.cvut.fel.khakikir.gravityupdown.engine.entity.MapObject;
+import cz.cvut.fel.khakikir.gravityupdown.engine.math.EngineMath;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class TileLayer extends MapBasic {
+public class TileLayer extends MapObject {
     private static final int TILESET_WIDTH = 16;
     private static final int TILESET_HEIGHT = 16;
 
     private int widthInTiles;
     private int heightInTiles;
     private int totalTiles;
+
+    private int tileWidth;
+    private int tileHeight;
 
     /**
      * Collection of tile objects, one for each type of tile in the layer
@@ -31,6 +36,8 @@ public class TileLayer extends MapBasic {
 
     public TileLayer() {
         this.tiles = new HashMap<>();
+        immovable = true;
+        moves = false;
     }
 
     public TileLayer loadMapFromArray(Integer[][] mapData,
@@ -49,6 +56,9 @@ public class TileLayer extends MapBasic {
      * Loads the tilelayer with image data and a tile graphic.
      */
     private void loadMapHelper(BufferedImage tileSetImage, int tileWidth, int tileHeight) {
+        this.tileWidth = tileWidth;
+        this.tileHeight = tileHeight;
+
         Set<Integer> tileIds = Stream.of(data)
                 .flatMap(Stream::of)
                 .collect(Collectors.toSet());
@@ -64,15 +74,75 @@ public class TileLayer extends MapBasic {
         }
     }
 
+    /**
+     * Checks if the MapObject overlaps any tiles, and calls the specified function if it's true.
+     *
+     * @param object    The MapObject you are checking for overlaps against.
+     * @param callback  An optional function, where first parameter is a Tile object, and second one
+     *                  is the object passed in in the first parameter of this method.
+     * @return Whether there were overlaps, or if a callback was specified, whatever the return value of the callback was.
+     */
+    public boolean overlapsWithCallback(MapObject object, BiFunction<MapObject, MapObject, Boolean> callback) {
+        boolean results = false;
+
+        // Figure out what tiles we need to check against
+        int selectionX1 = (int) Math.floor(object.position.x / tileWidth);
+        int selectionY1 = (int) Math.floor(object.position.y / tileHeight);
+        int selectionX2 = selectionX1 + (int) (Math.ceil(object.width / tileWidth) + 1);
+        int selectionY2 = selectionY1 + (int) (Math.ceil(object.height / tileWidth) + 1);
+
+        // Then bound these coordinates by the map edges
+        selectionX1 = EngineMath.bound(selectionX1, 0, widthInTiles);
+        selectionY1 = EngineMath.bound(selectionY1, 0, heightInTiles);
+        selectionX2 = EngineMath.bound(selectionX2, 0, widthInTiles);
+        selectionY2 = EngineMath.bound(selectionY2, 0, heightInTiles);
+
+        // Then loop through this selection of tiles
+        double deltaX = position.x - last.x;
+        double deltaY = position.y - last.y;
+        for (int row = selectionY1; row < selectionY2; row++) {
+            for (int column = selectionX1; column < selectionX2; column++) {
+                Integer tileId = data[row][column];
+                if (tileId != null) {
+                    Tile tile = tiles.get(tileId);
+
+                    // Instantiate a tile object for collision detection/resolution
+                    TileInstance tileInstance = new TileInstance();
+                    tileInstance.width = tileWidth;
+                    tileInstance.height = tileHeight;
+                    tileInstance.position.x = position.x + column * tile.getWidth();
+                    tileInstance.position.y = position.y + row * tile.getHeight();
+                    tileInstance.last.x = tileInstance.position.x - deltaX;
+                    tileInstance.last.y = tileInstance.position.y - deltaY;
+
+                    boolean overlapFound = ((object.position.x + object.width) > tileInstance.position.x)
+                            && (object.position.x < (tileInstance.position.x + tileInstance.width))
+                            && ((object.position.y + object.height) > tileInstance.position.y)
+                            && (object.position.y < (tileInstance.position.y + tileInstance.height));
+
+                    if (callback != null) {
+                        overlapFound = callback.apply(tileInstance, object);
+                    }
+
+                    if (overlapFound) {
+                        results = true;
+                    }
+                }
+            }
+        }
+
+        return results;
+    }
+
     @Override
     public void draw(Graphics2D g) {
         super.draw(g);
-        for (int i = 0; i < heightInTiles; i++) {
-            for (int j = 0; j < widthInTiles; j++) {
-                Integer tileId = data[i][j];
+        for (int row = 0; row < heightInTiles; row++) {
+            for (int column = 0; column < widthInTiles; column++) {
+                Integer tileId = data[row][column];
                 if (tileId != null) {
                     Tile tile = tiles.get(tileId);
-                    tile.draw(g, j, i);
+                    tile.draw(g, column, row);
                 }
             }
         }

@@ -1,9 +1,6 @@
 package cz.cvut.fel.khakikir.gravityupdown.engine.tile;
 
 import cz.cvut.fel.khakikir.gravityupdown.engine.Engine;
-import cz.cvut.fel.khakikir.gravityupdown.engine.entity.MapBasic;
-import cz.cvut.fel.khakikir.gravityupdown.engine.entity.MapObject;
-import cz.cvut.fel.khakikir.gravityupdown.engine.gamestate.GameStateManager;
 import cz.cvut.fel.khakikir.gravityupdown.engine.math.Vec2D;
 
 import java.awt.*;
@@ -35,6 +32,22 @@ public class Tile {
         this.tilemap = tilemap;
         this.id = id;
         this.width = width;
+        this.height = height;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
         this.height = height;
     }
 
