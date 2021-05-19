@@ -22,7 +22,7 @@ public class Keys {
         prevStates.putAll(states);
     }
 
-    public static boolean wasJustPressed(Integer keyCode) {
+    public static boolean justPressed(Integer keyCode) {
         return states.getOrDefault(keyCode, false) &&
                 !prevStates.getOrDefault(keyCode, false);
     }

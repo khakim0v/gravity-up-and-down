@@ -6,12 +6,12 @@ import cz.cvut.fel.khakikir.gravityupdown.engine.entity.Backdrop;
 import cz.cvut.fel.khakikir.gravityupdown.engine.gamestate.GameState;
 import cz.cvut.fel.khakikir.gravityupdown.engine.gamestate.GameStateManager;
 import cz.cvut.fel.khakikir.gravityupdown.engine.handler.Keys;
-import cz.cvut.fel.khakikir.gravityupdown.game.audio.SFX;
+import cz.cvut.fel.khakikir.gravityupdown.game.util.Registry;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
-public class MainMenu extends GameState {
+public class MenuState extends GameState {
     private final String[] options = {
             "Resume Game",
             "Start Game",
@@ -29,7 +29,7 @@ public class MainMenu extends GameState {
 
     private boolean isMuted;
 
-    public MainMenu(GameStateManager gsm) {
+    public MenuState(GameStateManager gsm) {
         super(gsm);
     }
 
@@ -42,8 +42,8 @@ public class MainMenu extends GameState {
         font = new Font("Arial", Font.PLAIN, 14);
         font2 = new Font("Arial", Font.PLAIN, 10);
 
-        AudioPlayer.load(SFX.MUSIC_BIT.getName(), SFX.MUSIC_BIT.getPath());
-        AudioPlayer.loop(SFX.MUSIC_BIT.getName());
+        AudioPlayer.load(Registry.Sound.MUSIC_BIT.name(), Registry.Sound.MUSIC_BIT.getPath());
+        // AudioPlayer.loop(SFX.MUSIC_BIT.getName());
     }
 
     @Override
@@ -77,12 +77,12 @@ public class MainMenu extends GameState {
     @Override
     public void handleInput() {
         // TODO: REMOVE!
-        if (Keys.wasJustPressed(KeyEvent.VK_M)) {
+        if (Keys.justPressed(KeyEvent.VK_M)) {
             System.out.println("VK_M was just pressed!");
             isMuted = !isMuted;
             AudioPlayer.setMuted(isMuted);
-        } else if (Keys.wasJustPressed(KeyEvent.VK_S)) {
-            // gsm.setState(new LevelState(gsm));
+        } else if (Keys.justPressed(KeyEvent.VK_S)) {
+            gsm.setState(new LevelState(gsm));
         }
     }
 }

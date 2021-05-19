@@ -1,5 +1,7 @@
 package cz.cvut.fel.khakikir.gravityupdown.game.main;
 
+import cz.cvut.fel.khakikir.gravityupdown.game.util.Strings;
+
 import javax.swing.*;
 
 public class Game {

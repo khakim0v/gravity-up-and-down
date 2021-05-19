@@ -20,7 +20,7 @@ import java.io.InputStream;
 public class GamePanel extends JPanel implements Runnable, KeyListener, MouseListener {
     public static final int WINDOW_WIDTH = 320;
     public static final int WINDOW_HEIGHT = 240;
-    public static final int WINDOW_SCALE = 2;
+    public static final int WINDOW_SCALE = 3;
 
     private static final int FPS = 60;
     private static final long FRAME_TARGET_TIME = 1000 / FPS; // in milliseconds
