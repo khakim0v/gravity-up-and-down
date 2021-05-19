@@ -10,6 +10,8 @@ import cz.cvut.fel.khakikir.gravityupdown.game.util.Registry;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class MenuState extends GameState {
     private final String[] options = {
@@ -35,10 +37,19 @@ public class MenuState extends GameState {
 
     @Override
     public void init() {
+        // Camera fade
         backdrop = new Backdrop("/images/backdrop.png");
         backdrop.setVelocity(20, 20);
         titleColor = Color.WHITE;
-        titleFont = new Font("Times New Roman", Font.PLAIN, 28);
+
+        // Move somewhere
+        InputStream is = MenuState.class.getResourceAsStream("/fonts/nokiafc22.ttf");
+        try {
+            titleFont = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(32.0f);
+        } catch (FontFormatException | IOException e) {
+            e.printStackTrace();
+        }
+
         font = new Font("Arial", Font.PLAIN, 14);
         font2 = new Font("Arial", Font.PLAIN, 10);
 
@@ -57,9 +68,21 @@ public class MenuState extends GameState {
         backdrop.draw(g);
 
         // draw title
-        g.setColor(titleColor);
         g.setFont(titleFont);
-        g.drawString("Gravity Up&Down", 50, 90);
+        g.setColor(Color.BLACK);
+        g.drawString("Gravity", 50+1, 60+1);
+        g.drawString("Gravity", 50+2, 60+2);
+        g.drawString("Gravity", 50+3, 60+3);
+        g.setColor(Color.WHITE);
+        g.drawString("Gravity", 50, 60);
+
+        g.setFont(titleFont.deriveFont(20.0f));
+        g.setColor(Color.BLACK);
+        g.drawString("Up&Down", 60+1, 90+1);
+        g.drawString("Up&Down", 60+2, 90+2);
+        g.drawString("Up&Down", 60+3, 90+3);
+        g.setColor(Color.WHITE);
+        g.drawString("Up&Down", 60, 90);
 
         // draw menu options
         g.setFont(font);
