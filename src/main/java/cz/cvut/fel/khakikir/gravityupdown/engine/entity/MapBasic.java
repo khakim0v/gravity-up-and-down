@@ -6,6 +6,8 @@ public abstract class MapBasic {
     private final int id = idEnumerator++;
     private static int idEnumerator = 0;
 
+    // TODO: exists, visible, etc.
+
     public void update() {
         // nothing
     }
