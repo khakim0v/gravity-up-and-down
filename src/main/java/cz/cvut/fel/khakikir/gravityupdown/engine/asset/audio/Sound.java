@@ -4,6 +4,7 @@ import com.github.trilarion.sound.vorbis.sampled.spi.VorbisAudioFileReader;
 import cz.cvut.fel.khakikir.gravityupdown.engine.asset.ResourceException;
 
 import javax.sound.sampled.*;
+import java.io.BufferedInputStream;
 import java.io.InputStream;
 
 public class Sound {
@@ -22,6 +23,7 @@ public class Sound {
                 throw new ResourceException(
                         String.format("Sound: No audio resource with the name '%s' is found", path));
             }
+            is = new BufferedInputStream(is);
 
             AudioInputStream ais;
             if (path.endsWith(".ogg")) {
@@ -92,9 +94,9 @@ public class Sound {
 
     private void stop() {
         if (clip != null) {
-            if (clip.isRunning()) {
+            //if (clip.isRunning()) {
                 clip.stop();
-            }
+           // }
         }
     }
 }
