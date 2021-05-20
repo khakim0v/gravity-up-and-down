@@ -1,7 +1,5 @@
 package cz.cvut.fel.khakikir.gravityupdown.game.pojo;
 
-import cz.cvut.fel.khakikir.gravityupdown.game.util.Registry;
-
 public class LevelStats {
     private static final int FLIP_VALUE = 1000;
     private static final int FLIP_KEPT_VALUE = 1500;
@@ -15,7 +13,7 @@ public class LevelStats {
     private static final int TIME_SECOND_VALUE = 500;
     private static final int SPIKE_VALUE = 250;
 
-    public Registry.Level level;
+    public int level;
     public boolean levelPassed;
     public int levelTimeLimit;
 
@@ -38,7 +36,7 @@ public class LevelStats {
 
     public int points;
 
-    public LevelStats(Registry.Level level) {
+    public LevelStats(int level) {
         this.level = level;
     }
 
