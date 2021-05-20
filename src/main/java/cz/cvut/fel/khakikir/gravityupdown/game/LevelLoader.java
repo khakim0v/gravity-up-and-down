@@ -18,7 +18,8 @@ public class LevelLoader {
     public static void loadTiledMap(String path, LevelState state) {
         String pathToExecutable = null;
         try {
-            pathToExecutable = new File(LevelLoader.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getPath();
+            File file = new File(LevelLoader.class.getProtectionDomain().getCodeSource().getLocation().toURI());
+            pathToExecutable = file.isDirectory() ? file.getPath() : file.getParent();
         } catch (URISyntaxException e) {
             throw new ResourceException("Failed to load the map", e);
         }
