@@ -9,10 +9,7 @@ import cz.cvut.fel.khakikir.gravityupdown.engine.handler.Keys;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -38,6 +35,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         setPreferredSize(new Dimension(WINDOW_WIDTH * WINDOW_SCALE, WINDOW_HEIGHT * WINDOW_SCALE));
         setFocusable(true);
         requestFocus();
+        addFocusListener(this);
     }
 
     @Override
@@ -182,5 +180,15 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
     @Override
     public void mouseExited(MouseEvent e) {
 
+    }
+
+    @Override
+    public void focusGained(FocusEvent e) {
+        Engine.focusGained.handle();
+    }
+
+    @Override
+    public void focusLost(FocusEvent e) {
+        Engine.focusLost.handle();;
     }
 }

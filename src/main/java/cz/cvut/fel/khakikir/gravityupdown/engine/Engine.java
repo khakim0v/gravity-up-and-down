@@ -15,6 +15,11 @@ public class Engine {
     public static int height;
 
     /**
+     * Signals
+     */
+    public static Signal focusGained = new Signal();
+    public static Signal focusLost = new Signal();
+    /**
      * Call this function to see if one {@code MapObject} collides with another.
      * This function just calls `Engine.overlap` and presets the `processCallback` parameter to `MapObject.separate`.
      *
