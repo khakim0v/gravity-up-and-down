@@ -517,15 +517,15 @@ public abstract class MapObject extends MapBasic {
      * Internal function for updating the position and speed of this object.
      */
     private void updateMotion() {
-        double velocityDelta = 0.5 * (EngineVelocity.computeVelocity(velocity.x, acceleration.x, drag.x, maxVelocity.x, Time.deltaTime) - velocity.x);
+        double velocityDelta = 0.5 * (EngineVelocity.computeVelocity(velocity.x, acceleration.x, drag.x, maxVelocity.x, Engine.elapsed) - velocity.x);
         velocity.x += velocityDelta;
-        var delta = velocity.x * Time.deltaTime;
+        var delta = velocity.x * Engine.elapsed;
         velocity.x += velocityDelta;
         position.x += delta;
 
-        velocityDelta = 0.5 * (EngineVelocity.computeVelocity(velocity.y, acceleration.y, drag.y, maxVelocity.y, Time.deltaTime) - velocity.y);
+        velocityDelta = 0.5 * (EngineVelocity.computeVelocity(velocity.y, acceleration.y, drag.y, maxVelocity.y, Engine.elapsed) - velocity.y);
         velocity.y += velocityDelta;
-        delta = velocity.y * Time.deltaTime;
+        delta = velocity.y * Engine.elapsed;
         velocity.y += velocityDelta;
         position.y += delta;
     }

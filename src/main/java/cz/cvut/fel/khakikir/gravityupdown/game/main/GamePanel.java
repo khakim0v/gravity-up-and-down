@@ -1,7 +1,6 @@
 package cz.cvut.fel.khakikir.gravityupdown.game.main;
 
 import cz.cvut.fel.khakikir.gravityupdown.engine.Engine;
-import cz.cvut.fel.khakikir.gravityupdown.engine.Time;
 import cz.cvut.fel.khakikir.gravityupdown.engine.entity.Camera;
 import cz.cvut.fel.khakikir.gravityupdown.engine.gamestate.GameStateManager;
 import cz.cvut.fel.khakikir.gravityupdown.engine.handler.Keys;
@@ -91,8 +90,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 
             // Calculate FPS
             double alpha = 0.9;
-            Time.instantFps = 1_000_000_000.0d / (newTime - currentTime);
-            Time.averageFps = alpha * Time.averageFps + (1.0 - alpha) * Time.instantFps;
+            Engine.instantFps = 1_000_000_000.0d / (newTime - currentTime);
+            Engine.averageFps = alpha * Engine.averageFps + (1.0 - alpha) * Engine.instantFps;
 
             currentTime = newTime;
 
@@ -122,7 +121,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
      * @param delta The delta time in seconds.
      */
     private void update(double delta) {
-        Time.deltaTime = delta;
+        Engine.elapsed = delta;
         gsm.update();
         Engine.camera.update();
         Keys.update();
