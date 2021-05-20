@@ -2,6 +2,7 @@ package cz.cvut.fel.khakikir.gravityupdown.engine.ui;
 
 import cz.cvut.fel.khakikir.gravityupdown.engine.entity.MapObject;
 import cz.cvut.fel.khakikir.gravityupdown.engine.math.Vec2D;
+import cz.cvut.fel.khakikir.gravityupdown.game.util.Registry;
 
 import java.awt.*;
 import java.awt.font.FontRenderContext;
@@ -73,7 +74,31 @@ public class EngineText extends MapObject {
         recalculateDimensions();
     }
 
-    private EngineText(double x, double y, double fieldWidth, String text, int size) {
+    /**
+     * Creates a new `EngineText` object at the specified position using default font.
+     *
+     * @param x          The x position of the text.
+     * @param y          The y position of the text.
+     * @param fieldWidth The `width` of the text object.
+     * @param text       The actual text you would like to display initially.
+     * @param size       The font size for this text object.
+     */
+    public EngineText(double x, double y, double fieldWidth, int size, String text) {
+        this(x, y, fieldWidth, text, size);
+
+        InputStream is = EngineText.class.getResourceAsStream(Registry.Font.NOKIAFC.getPath());
+        if (is != null) {
+            try {
+                this.font = Font.createFont(Font.TRUETYPE_FONT, is)
+                        .deriveFont((float) this.size);
+            } catch (FontFormatException | IOException e) {
+                e.printStackTrace();
+            }
+        }
+        recalculateDimensions();
+    }
+
+    public EngineText(double x, double y, double fieldWidth, String text, int size) {
         super(x, y);
         this.scale = new Vec2D(1, 1);
         this.fieldWidth = fieldWidth;
