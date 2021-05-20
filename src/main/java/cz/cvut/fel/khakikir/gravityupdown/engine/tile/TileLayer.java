@@ -46,6 +46,22 @@ public class TileLayer extends MapObject {
         moves = false;
     }
 
+    public int getWidthInTiles() {
+        return widthInTiles;
+    }
+
+    public int getHeightInTiles() {
+        return heightInTiles;
+    }
+
+    public int getTileWidth() {
+        return tileWidth;
+    }
+
+    public int getTileHeight() {
+        return tileHeight;
+    }
+
     public TileLayer loadMapFromArray(Integer[][] mapData,
                                       int widthInTiles, int heightInTiles,
                                       BufferedImage tileSetImage,
