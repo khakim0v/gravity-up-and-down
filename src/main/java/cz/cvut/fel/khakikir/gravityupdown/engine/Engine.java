@@ -11,6 +11,8 @@ public class Engine {
      * A global camera
      */
     public static Camera camera;
+    public static int width;
+    public static int height;
 
     /**
      * Call this function to see if one {@code MapObject} collides with another.

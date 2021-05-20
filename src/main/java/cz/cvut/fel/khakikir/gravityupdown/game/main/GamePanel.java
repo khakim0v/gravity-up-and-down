@@ -17,9 +17,9 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class GamePanel extends JPanel implements Runnable, KeyListener, MouseListener {
-    public static final int WINDOW_WIDTH = 320;
-    public static final int WINDOW_HEIGHT = 240;
+public class GamePanel extends JPanel implements Runnable, KeyListener, MouseListener, FocusListener {
+    private static final int WINDOW_WIDTH = 320;
+    private static final int WINDOW_HEIGHT = 240;
     public static final int WINDOW_SCALE = 3;
 
     private static final int FPS = 60;
@@ -56,8 +56,12 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         bufferedImage = new BufferedImage(WINDOW_WIDTH, WINDOW_HEIGHT, BufferedImage.TYPE_INT_RGB);
         graphics = (Graphics2D) bufferedImage.getGraphics();
         gsm = new GameStateManager();
-        Engine.camera = new Camera(GamePanel.WINDOW_WIDTH, GamePanel.WINDOW_HEIGHT);
         setCustomCursor();
+
+        Engine.width = WINDOW_WIDTH;
+        Engine.height = WINDOW_HEIGHT;
+        Engine.camera = new Camera(GamePanel.WINDOW_WIDTH, GamePanel.WINDOW_HEIGHT);
+
         running = true;
     }
 
