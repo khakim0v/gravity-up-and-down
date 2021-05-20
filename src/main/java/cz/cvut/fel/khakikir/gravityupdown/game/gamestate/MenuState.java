@@ -1,33 +1,22 @@
 package cz.cvut.fel.khakikir.gravityupdown.game.gamestate;
 
-import cz.cvut.fel.khakikir.gravityupdown.engine.Time;
-import cz.cvut.fel.khakikir.gravityupdown.engine.asset.audio.AudioPlayer;
+import cz.cvut.fel.khakikir.gravityupdown.engine.Engine;
+import cz.cvut.fel.khakikir.gravityupdown.engine.asset.audio.Sound;
 import cz.cvut.fel.khakikir.gravityupdown.engine.entity.Backdrop;
 import cz.cvut.fel.khakikir.gravityupdown.engine.gamestate.GameState;
 import cz.cvut.fel.khakikir.gravityupdown.engine.gamestate.GameStateManager;
 import cz.cvut.fel.khakikir.gravityupdown.engine.handler.Keys;
+import cz.cvut.fel.khakikir.gravityupdown.engine.ui.EngineText;
 import cz.cvut.fel.khakikir.gravityupdown.game.util.Registry;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.io.IOException;
-import java.io.InputStream;
 
 public class MenuState extends GameState {
-    private final String[] options = {
-            "Resume Game",
-            "Start Game",
-            "High Score",
-            "Settings",
-            "Quit",
-    };
-
     private Backdrop backdrop;
 
-    private Color titleColor;
-    private Font titleFont;
-    private Font font;
-    private Font font2;
+    private EngineText creditsText;
+    private EngineText fpsText;
 
     private boolean isMuted;
 
@@ -37,64 +26,51 @@ public class MenuState extends GameState {
 
     @Override
     public void init() {
-        // Camera fade
-        backdrop = new Backdrop("/images/backdrop.png");
-        backdrop.setVelocity(20, 20);
-        titleColor = Color.WHITE;
+        // TBD: Camera fade
 
-        // Move somewhere
-        InputStream is = MenuState.class.getResourceAsStream("/fonts/nokiafc22.ttf");
-        try {
-            titleFont = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(32.0f);
-        } catch (FontFormatException | IOException e) {
-            e.printStackTrace();
+        // Background
+        backdrop = new Backdrop(Registry.Image.BACKDROP.getPath());
+        backdrop.setVelocity(20, 20);
+
+        EngineText titleText = new EngineText(50, 30, -1, "Gravity", 32, Registry.Font.NOKIAFC.getPath());
+        EngineText subtitleText = new EngineText(60, 70, -1, "Up&Down", 20, Registry.Font.NOKIAFC.getPath());
+        titleText.setShadowSize(3);
+        subtitleText.setShadowSize(3);
+
+        add(backdrop);
+
+        add(titleText);
+        add(subtitleText);
+
+        Font font = new Font("Arial", Font.PLAIN, 14);
+        Font font2 = new Font("Arial", Font.PLAIN, 10);
+        String[] options = {
+                "Resume Game",
+                "Start Game",
+                "High Score",
+                "Settings",
+                "Quit",
+        };
+        for (int i = 0; i < options.length; i++) {
+            EngineText optionText = new EngineText(145, 115 + 20 * i, -1, options[i], font);
+            optionText.color = Color.WHITE;
+            add(optionText);
         }
 
-        font = new Font("Arial", Font.PLAIN, 14);
-        font2 = new Font("Arial", Font.PLAIN, 10);
+        creditsText = new EngineText(10 , 222, -1, "2021 Kirill Khakimov", font2);
+        fpsText = new EngineText(260 , 222, -1, "FPS: 0.00", font2);
 
-        AudioPlayer.load(Registry.Sound.MUSIC_BIT.name(), Registry.Sound.MUSIC_BIT.getPath());
-        // AudioPlayer.loop(SFX.MUSIC_BIT.getName());
+        add(creditsText);
+        add(fpsText);
+
+        Sound musicSnd = Sound.load(Registry.Sound.MUSIC_BIT.getPath());
+        musicSnd.loop();
     }
 
     @Override
     public void update() {
         super.update();
-        backdrop.update();
-    }
-
-    @Override
-    public void draw(Graphics2D g) {
-        backdrop.draw(g);
-
-        // draw title
-        g.setFont(titleFont);
-        g.setColor(Color.BLACK);
-        g.drawString("Gravity", 50+1, 60+1);
-        g.drawString("Gravity", 50+2, 60+2);
-        g.drawString("Gravity", 50+3, 60+3);
-        g.setColor(Color.WHITE);
-        g.drawString("Gravity", 50, 60);
-
-        g.setFont(titleFont.deriveFont(20.0f));
-        g.setColor(Color.BLACK);
-        g.drawString("Up&Down", 60+1, 90+1);
-        g.drawString("Up&Down", 60+2, 90+2);
-        g.drawString("Up&Down", 60+3, 90+3);
-        g.setColor(Color.WHITE);
-        g.drawString("Up&Down", 60, 90);
-
-        // draw menu options
-        g.setFont(font);
-        g.setColor(Color.WHITE);
-        for (int i = 0; i < options.length; i++) {
-            g.drawString(options[i], 145, 125 + 20 * i);
-        }
-
-        // other
-        g.setFont(font2);
-        g.drawString("2021 Kirill Khakimov", 10, 232);
-        g.drawString(String.format("FPS: %.2f", Time.averageFps), 260, 232);
+        fpsText.setText(String.format("FPS: %.2f", Engine.averageFps));
     }
 
     @Override
@@ -103,7 +79,7 @@ public class MenuState extends GameState {
         if (Keys.justPressed(KeyEvent.VK_M)) {
             System.out.println("VK_M was just pressed!");
             isMuted = !isMuted;
-            AudioPlayer.setMuted(isMuted);
+            Sound.setMuted(isMuted);
         } else if (Keys.justPressed(KeyEvent.VK_S)) {
             gsm.setState(new LevelState(gsm));
         }
