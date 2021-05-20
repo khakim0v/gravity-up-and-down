@@ -39,6 +39,17 @@ public class MapSprite extends MapObject {
         super(x, y);
     }
 
+    /**
+     * Creates a `MapSprite` at a specified position and loads the graphic
+     *
+     * @param x The initial X position of the sprite.
+     * @param y The initial Y position of the sprite.
+     */
+    public MapSprite(float x, float y, String path) {
+        super(x, y);
+        loadGraphic(path);
+    }
+
     public float getAlpha() {
         return alpha;
     }
@@ -48,10 +59,29 @@ public class MapSprite extends MapObject {
         this.acAlpha = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha);
     }
 
+    public BufferedImage getImage() {
+        return image;
+    }
+
+    public Graphics2D getGraphics() {
+        if (image != null) {
+            return image.createGraphics();
+        } else {
+            return null;
+        }
+    }
+
     public void loadGraphic(String path) {
         this.image = Sprite.loadImage(path);
         this.width = image.getWidth();
         this.height = image.getHeight();
+    }
+
+    public void makeGraphic(double width, double height) {
+        this.width = width;
+        this.height = height;
+        this.image = new BufferedImage((int) this.width, (int) this.height,
+                BufferedImage.TYPE_INT_ARGB);
     }
 
     @Override
