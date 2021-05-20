@@ -81,7 +81,7 @@ public class MenuState extends GameState {
             isMuted = !isMuted;
             Sound.setMuted(isMuted);
         } else if (Keys.justPressed(KeyEvent.VK_S)) {
-            gsm.setState(new LevelState(gsm));
+            gsm.switchState(new LevelState(gsm));
         }
     }
 }

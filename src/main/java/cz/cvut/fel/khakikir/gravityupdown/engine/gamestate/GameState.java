@@ -7,8 +7,6 @@ public abstract class GameState extends MapGroup {
 
     public GameState(GameStateManager gsm) {
         this.gsm = gsm;
-
-        init();
     }
 
     public GameStateManager getGameStateManager() {
