@@ -15,7 +15,7 @@ public final class GameVars {
     //public static var SAVES;
     //public static var AUTOSAVE;
     public static boolean RESUMED;
-    //public static SavePointState SAVEPOINT;
+    public static SavePoint SAVEPOINT;
 
     private GameVars() {
 
