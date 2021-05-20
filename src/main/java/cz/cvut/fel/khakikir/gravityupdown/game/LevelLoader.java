@@ -1,5 +1,6 @@
 package cz.cvut.fel.khakikir.gravityupdown.game;
 
+import cz.cvut.fel.khakikir.gravityupdown.engine.asset.ResourceException;
 import cz.cvut.fel.khakikir.gravityupdown.engine.asset.image.Sprite;
 import cz.cvut.fel.khakikir.gravityupdown.engine.tile.TileLayer;
 import cz.cvut.fel.khakikir.gravityupdown.game.gamestate.LevelState;
@@ -7,13 +8,23 @@ import org.tiledreader.*;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.net.URISyntaxException;
 import java.util.Set;
 
 public class LevelLoader {
     private static final String TILESET_PATH = "/images/tileset.png";
 
     public static void loadTiledMap(String path, LevelState state) {
-        TiledReader tiledReader = new FileSystemTiledReader();
+        String pathToExecutable = null;
+        try {
+            pathToExecutable = new File(LevelLoader.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getPath();
+        } catch (URISyntaxException e) {
+            throw new ResourceException("Failed to load the map", e);
+        }
+        path = pathToExecutable + path;
+
+        FileSystemTiledReader tiledReader = new FileSystemTiledReader();
         TiledMap map = tiledReader.getMap(path);
 
         // Handle level properties
