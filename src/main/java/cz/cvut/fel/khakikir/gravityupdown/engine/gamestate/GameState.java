@@ -2,8 +2,6 @@ package cz.cvut.fel.khakikir.gravityupdown.engine.gamestate;
 
 import cz.cvut.fel.khakikir.gravityupdown.engine.entity.MapGroup;
 
-import java.awt.*;
-
 public abstract class GameState extends MapGroup {
     protected GameStateManager gsm;
 
@@ -21,9 +19,8 @@ public abstract class GameState extends MapGroup {
 
     public void update() {
         handleInput();
+        super.update();
     }
-
-    public abstract void draw(Graphics2D g);
 
     public abstract void handleInput();
 }

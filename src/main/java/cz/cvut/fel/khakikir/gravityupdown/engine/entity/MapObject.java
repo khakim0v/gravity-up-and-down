@@ -1,5 +1,6 @@
 package cz.cvut.fel.khakikir.gravityupdown.engine.entity;
 
+import cz.cvut.fel.khakikir.gravityupdown.engine.Engine;
 import cz.cvut.fel.khakikir.gravityupdown.engine.Time;
 import cz.cvut.fel.khakikir.gravityupdown.engine.math.EngineVelocity;
 import cz.cvut.fel.khakikir.gravityupdown.engine.math.Vec2D;
@@ -126,6 +127,14 @@ public abstract class MapObject extends MapBasic {
      */
     public boolean immovable = false;
 
+    /**
+     * Controls how much this object is affected by camera scrolling.
+     * `0` = no movement (e.g. a background layer),
+     * `1` = same movement speed as the foreground.
+     * Default value is `(1,1)`.
+     */
+    public Vec2D scrollFactor;
+
     protected MapObject() {
         this.position = new Vec2D(0, 0);
         initVars();
@@ -173,10 +182,25 @@ public abstract class MapObject extends MapBasic {
 
     private void initVars() {
         this.last = new Vec2D(position.x, position.y);
+        this.scrollFactor = new Vec2D(1, 1);
+
+        // motions vars
         this.velocity = new Vec2D(0, 0);
         this.acceleration = new Vec2D(0, 0);
         this.drag = new Vec2D(0, 0);
         this.maxVelocity = new Vec2D(10000, 10000);
+    }
+
+    /**
+     * Call this function to figure out the on-screen position of the object.
+     *
+     * @return A new Vec2D, containing the screen X and Y position of this object.
+     */
+    public Vec2D getScreenPosition() {
+        Vec2D point = new Vec2D(position);
+        point.x -= Engine.camera.scroll.x * scrollFactor.x;
+        point.y -= Engine.camera.scroll.y * scrollFactor.y;
+        return point;
     }
 
     public void setPosition(double x, double y) {

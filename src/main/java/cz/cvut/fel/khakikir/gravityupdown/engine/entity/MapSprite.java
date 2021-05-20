@@ -43,10 +43,10 @@ public class MapSprite extends MapObject {
     @Override
     public void draw(Graphics2D g) {
         super.draw(g);
-        Vec2D mapScroll = Engine.camera.getScroll();
         if (image != null) {
-            int x = (int) (position.x - mapScroll.x);
-            int y = (int) (position.y - mapScroll.y);
+            Vec2D screenPosition = getScreenPosition();
+            int x = (int) screenPosition.x;
+            int y = (int) screenPosition.y;
             x = flipX ? (int) (x + width) : x;
             y = flipY ? (int) (y + height) : y;
 

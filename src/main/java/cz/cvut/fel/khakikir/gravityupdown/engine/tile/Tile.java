@@ -1,8 +1,5 @@
 package cz.cvut.fel.khakikir.gravityupdown.engine.tile;
 
-import cz.cvut.fel.khakikir.gravityupdown.engine.Engine;
-import cz.cvut.fel.khakikir.gravityupdown.engine.math.Vec2D;
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
@@ -56,10 +53,9 @@ public class Tile {
     }
 
     public void draw(Graphics2D g, int tilemapX, int tilemapY) {
-        Vec2D mapScroll = Engine.camera.getScroll();
         if (image != null) {
-            final int x = (int) (tilemapX * width - mapScroll.x);
-            final int y = (int) (tilemapY * height - mapScroll.y);
+            final int x = tilemapX * width;
+            final int y = tilemapY * height;
             g.drawImage(image, x, y, null);
         }
     }

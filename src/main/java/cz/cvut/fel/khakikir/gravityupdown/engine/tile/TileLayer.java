@@ -2,6 +2,7 @@ package cz.cvut.fel.khakikir.gravityupdown.engine.tile;
 
 import cz.cvut.fel.khakikir.gravityupdown.engine.entity.MapObject;
 import cz.cvut.fel.khakikir.gravityupdown.engine.math.EngineMath;
+import cz.cvut.fel.khakikir.gravityupdown.engine.math.Vec2D;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -34,8 +35,13 @@ public class TileLayer extends MapObject {
      */
     private Integer[][] data;
 
+    private BufferedImage bufferedImage;
+    private Graphics2D graphics;
+
+
     public TileLayer() {
         this.tiles = new HashMap<>();
+
         immovable = true;
         moves = false;
     }
@@ -47,6 +53,9 @@ public class TileLayer extends MapObject {
         this.widthInTiles = widthInTiles;
         this.heightInTiles = heightInTiles;
         this.data = mapData.clone();
+        this.bufferedImage = new BufferedImage(widthInTiles * tileWidth, heightInTiles * tileHeight,
+                BufferedImage.TYPE_INT_ARGB);
+        this.graphics = bufferedImage.createGraphics();
 
         loadMapHelper(tileSetImage, tileWidth, tileHeight);
         return this;
@@ -136,15 +145,24 @@ public class TileLayer extends MapObject {
 
     @Override
     public void draw(Graphics2D g) {
-        super.draw(g);
+        // don't try to render a tilemap that isn't loaded yet
+        if (graphics == null)
+            return;
+
         for (int row = 0; row < heightInTiles; row++) {
             for (int column = 0; column < widthInTiles; column++) {
                 Integer tileId = data[row][column];
                 if (tileId != null) {
                     Tile tile = tiles.get(tileId);
-                    tile.draw(g, column, row);
+                    tile.draw(graphics, column, row);
                 }
             }
         }
+
+        // render tilemap to the screen
+        Vec2D screenPosition = getScreenPosition();
+        int x = (int) screenPosition.x;
+        int y = (int) screenPosition.y;
+        g.drawImage(bufferedImage, x, y,null);
     }
 }
