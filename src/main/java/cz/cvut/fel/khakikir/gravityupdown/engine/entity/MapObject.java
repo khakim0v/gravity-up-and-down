@@ -220,6 +220,19 @@ public class MapObject extends MapBasic {
     }
 
     /**
+     * Centers this `MapObject` on the screen, either by the x axis, y axis, or both.
+     *
+     * @param centerX Whether the object should be centered by the x axis.
+     * @param centerY Whether the object should be centered by the y axis.
+     */
+    public void screenCenter(boolean centerX, boolean centerY) {
+        if (centerX)
+            position.x = ((double) Engine.width / 2) - (width / 2);
+        if (centerY)
+            position.y = ((double) Engine.height / 2) - (height / 2);
+    }
+
+    /**
      * Checking overlap and updating `touching` variables, X-axis part used by `updateTouchingFlags`.
      *
      * @param object1 Any `MapObject`.
