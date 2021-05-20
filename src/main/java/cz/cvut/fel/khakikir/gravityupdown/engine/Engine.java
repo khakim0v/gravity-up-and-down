@@ -19,6 +19,15 @@ public class Engine {
      */
     public static Signal focusGained = new Signal();
     public static Signal focusLost = new Signal();
+
+
+    /**
+     * The delta time for update() in seconds
+     */
+    public static double elapsed;
+    public static double instantFps;
+    public static double averageFps;
+
     /**
      * Call this function to see if one {@code MapObject} collides with another.
      * This function just calls `Engine.overlap` and presets the `processCallback` parameter to `MapObject.separate`.
