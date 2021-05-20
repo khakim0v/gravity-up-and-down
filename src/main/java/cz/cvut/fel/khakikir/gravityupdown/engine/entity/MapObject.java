@@ -1,7 +1,6 @@
 package cz.cvut.fel.khakikir.gravityupdown.engine.entity;
 
 import cz.cvut.fel.khakikir.gravityupdown.engine.Engine;
-import cz.cvut.fel.khakikir.gravityupdown.engine.Time;
 import cz.cvut.fel.khakikir.gravityupdown.engine.math.EngineVelocity;
 import cz.cvut.fel.khakikir.gravityupdown.engine.math.Vec2D;
 import cz.cvut.fel.khakikir.gravityupdown.engine.tile.TileLayer;
@@ -9,7 +8,7 @@ import cz.cvut.fel.khakikir.gravityupdown.engine.tile.TileLayer;
 import java.awt.geom.Rectangle2D;
 
 @SuppressWarnings({"DuplicatedCode", "ConstantConditions"})
-public abstract class MapObject extends MapBasic {
+public class MapObject extends MapBasic {
     /**
      * Generic value for "left". Used by `facing` and `touching`.
      */
@@ -135,12 +134,12 @@ public abstract class MapObject extends MapBasic {
      */
     public Vec2D scrollFactor;
 
-    protected MapObject() {
+    public MapObject() {
         this.position = new Vec2D(0, 0);
         initVars();
     }
 
-    protected MapObject(double x, double y) {
+    public MapObject(double x, double y) {
         this.position = new Vec2D(x, y);
         initVars();
     }
