@@ -437,7 +437,7 @@ public class MapObject extends MapBasic {
                 object1.velocity.y = obj2v - obj1v * object1.elasticity;
 
                 // This is special case code that handles cases like horizontal moving platforms you can ride
-                if (object1.collisionXDrag && object2.moves && (obj1delta > obj2delta)) {
+                if (object1.collisionXDrag && object2.active && object2.moves && (obj1delta > obj2delta)) {
                     object1.position.x += object2.position.x - object2.last.x;
                 }
             } else if (!obj2immovable) {
@@ -445,7 +445,7 @@ public class MapObject extends MapBasic {
                 object2.velocity.y = obj1v - obj2v * object2.elasticity;
 
                 // This is special case code that handles cases like horizontal moving platforms you can ride
-                if (object2.collisionXDrag && object1.moves && (obj1delta < obj2delta)) {
+                if (object2.collisionXDrag && object1.active && object1.moves && (obj1delta < obj2delta)) {
                     object2.position.x += object1.position.x - object1.last.x;
                 }
             }

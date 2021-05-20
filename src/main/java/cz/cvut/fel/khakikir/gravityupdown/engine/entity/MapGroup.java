@@ -11,6 +11,10 @@ public class MapGroup extends MapBasic {
         this.members = new ArrayList<>();
     }
 
+    public List<MapBasic> getMembers() {
+        return members;
+    }
+
     /**
      * Adds a new `MapBasic` subclass (`MapBasic`, `MapSprite`, `Object`, etc) to the group.
      * `MapGroup` will try to replace a `null` member of the list first.
@@ -59,7 +63,7 @@ public class MapGroup extends MapBasic {
     @Override
     public void update() {
         for (MapBasic member : members) {
-            if (member != null && member.active) {
+            if (member != null && member.exists && member.active) {
                 member.update();
             }
         }
@@ -71,7 +75,7 @@ public class MapGroup extends MapBasic {
     @Override
     public void draw(Graphics2D g) {
         for (MapBasic member : members) {
-            if (member != null && member.visible) {
+            if (member != null && member.exists && member.visible) {
                 member.draw(g);
             }
         }

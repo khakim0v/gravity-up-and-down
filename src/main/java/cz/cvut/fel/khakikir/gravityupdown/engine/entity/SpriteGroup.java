@@ -72,7 +72,7 @@ public class SpriteGroup extends MapObject {
     @Override
     public void update() {
         for (MapObject member : members) {
-            if (member != null && member.active) {
+            if (member != null && member.exists && member.active) {
                 member.update();
             }
         }
@@ -81,7 +81,7 @@ public class SpriteGroup extends MapObject {
     @Override
     public void draw(Graphics2D g) {
         for (MapObject member : members) {
-            if (member != null && member.visible) {
+            if (member != null && member.exists && member.visible) {
                 member.draw(g);
             }
         }
