@@ -6,7 +6,12 @@ public abstract class MapBasic {
     private final int id = idEnumerator++;
     private static int idEnumerator = 0;
 
-    // TODO: exists, visible, etc.
+    /**
+     * Useful state for many game objects - "dead" (`!alive`) vs `alive`.
+     */
+    public boolean alive = true;
+
+    // TODO: exists, etc.
 
     public void update() {
         // nothing
