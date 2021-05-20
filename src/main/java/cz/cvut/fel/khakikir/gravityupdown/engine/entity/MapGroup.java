@@ -52,22 +52,26 @@ public class MapGroup extends MapBasic {
         }
     }
 
+
     /**
-     * Automatically goes through and calls render on everything you added.
+     * Automatically goes through and calls update on everything you added.
      */
     @Override
     public void update() {
         for (MapBasic member : members) {
-            if (member != null) {
+            if (member != null && member.active) {
                 member.update();
             }
         }
     }
 
+    /**
+     * Automatically goes through and calls render on everything you added.
+     */
     @Override
     public void draw(Graphics2D g) {
         for (MapBasic member : members) {
-            if (member != null) {
+            if (member != null && member.visible) {
                 member.draw(g);
             }
         }

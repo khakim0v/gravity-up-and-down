@@ -11,6 +11,16 @@ public abstract class MapBasic {
      */
     public boolean alive = true;
 
+    /**
+     * Controls whether `update()` is automatically called by `GameState`/`MapGroup`.
+     */
+    public boolean active = true;
+
+    /**
+     * Controls whether `draw()` is automatically called by `GameState`/`MapGroup`.
+     */
+    public boolean visible = true;
+
     // TODO: exists, etc.
 
     public void update() {
