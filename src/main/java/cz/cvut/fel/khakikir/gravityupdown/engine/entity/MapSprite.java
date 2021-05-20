@@ -1,6 +1,5 @@
 package cz.cvut.fel.khakikir.gravityupdown.engine.entity;
 
-import cz.cvut.fel.khakikir.gravityupdown.engine.Engine;
 import cz.cvut.fel.khakikir.gravityupdown.engine.asset.image.Sprite;
 import cz.cvut.fel.khakikir.gravityupdown.engine.math.Vec2D;
 
@@ -25,6 +24,10 @@ public class MapSprite extends MapObject {
     public boolean flipY = false;
 
     private BufferedImage image;
+    private float alpha = 1.0f;
+
+    private AlphaComposite acAlpha = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha);
+    private final AlphaComposite acNormal = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f);
 
     /**
      * Creates a `MapSprite` at a specified position.
@@ -36,8 +39,19 @@ public class MapSprite extends MapObject {
         super(x, y);
     }
 
+    public float getAlpha() {
+        return alpha;
+    }
+
+    public void setAlpha(float alpha) {
+        this.alpha = alpha;
+        this.acAlpha = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha);
+    }
+
     public void loadGraphic(String path) {
         this.image = Sprite.loadImage(path);
+        this.width = image.getWidth();
+        this.height = image.getHeight();
     }
 
     @Override
@@ -52,7 +66,10 @@ public class MapSprite extends MapObject {
 
             double width = flipX ? -this.width : this.width;
             double height = flipY ? -this.height : this.height;
+
+            g.setComposite(acAlpha);
             g.drawImage(image, x, y, (int) width, (int) height, null);
+            g.setComposite(acNormal);
         }
     }
 }
