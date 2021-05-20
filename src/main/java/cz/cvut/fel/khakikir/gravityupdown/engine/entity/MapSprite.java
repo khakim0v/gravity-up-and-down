@@ -35,7 +35,7 @@ public class MapSprite extends MapObject {
      * @param x The initial X position of the sprite.
      * @param y The initial Y position of the sprite.
      */
-    public MapSprite(float x, float y) {
+    public MapSprite(double x, double y) {
         super(x, y);
     }
 
@@ -45,7 +45,7 @@ public class MapSprite extends MapObject {
      * @param x The initial X position of the sprite.
      * @param y The initial Y position of the sprite.
      */
-    public MapSprite(float x, float y, String path) {
+    public MapSprite(double x, double y, String path) {
         super(x, y);
         loadGraphic(path);
     }
