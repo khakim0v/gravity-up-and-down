@@ -12,17 +12,16 @@ public class LevelStateHUD extends SpriteGroup {
     private static final int MARGIN_TOP = 5;
     private static final int MARGIN_SIDE = 5;
     private static final int FONT_SIZE = 8;
-
-    private int scoreValue;
     private final EngineText scoreText;
-    //private final EngineText flipText;
-    private int timeSecs;
     private final EngineText timeText;
-    private int flips;
     private final MapSprite barBg;
     private final MapSprite barTicks;
     private final MapSprite barTickGreen;
     private final MapSprite barGfx;
+    private int scoreValue;
+    //private final EngineText flipText;
+    private int timeSecs;
+    private int flips;
     private int barCount;
 
     public LevelStateHUD() {
@@ -134,10 +133,11 @@ public class LevelStateHUD extends SpriteGroup {
         int width = (int) Math.floor(Math.min(amount, 8) * 8);
 
         Graphics2D g = barGfx.getGraphics();
-        g.setColor(new Color(0f,0f,0f,0f ));
+        g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC));
+        g.setColor(new Color(0f, 0f, 0f, 0f));
         g.fillRect(0, 0, (int) barGfx.width, (int) barGfx.height);
         g.drawImage(barTicks.getImage(),
-                0,0, width, (int) barGfx.height,
-                0,0, width, (int) barGfx.height, null);
+                0, 0, width, (int) barGfx.height,
+                0, 0, width, (int) barGfx.height, null);
     }
 }
