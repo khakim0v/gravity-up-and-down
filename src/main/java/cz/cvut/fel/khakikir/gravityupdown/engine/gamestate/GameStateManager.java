@@ -3,7 +3,6 @@ package cz.cvut.fel.khakikir.gravityupdown.engine.gamestate;
 import cz.cvut.fel.khakikir.gravityupdown.engine.Engine;
 import cz.cvut.fel.khakikir.gravityupdown.engine.entity.Camera;
 import cz.cvut.fel.khakikir.gravityupdown.engine.util.EngineTimer;
-import cz.cvut.fel.khakikir.gravityupdown.game.gamestate.MenuState;
 
 import java.awt.*;
 import java.lang.reflect.Constructor;
@@ -12,8 +11,12 @@ import java.lang.reflect.InvocationTargetException;
 public class GameStateManager {
     private GameState currentState;
 
-    public GameStateManager() {
-        switchState(new MenuState());
+    public GameStateManager(GameState state) {
+        switchState(state);
+    }
+
+    public GameState getCurrentState() {
+        return currentState;
     }
 
     public void switchState(GameState state) {

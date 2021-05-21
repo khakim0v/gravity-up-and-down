@@ -5,6 +5,7 @@ import cz.cvut.fel.khakikir.gravityupdown.engine.entity.Camera;
 import cz.cvut.fel.khakikir.gravityupdown.engine.gamestate.GameStateManager;
 import cz.cvut.fel.khakikir.gravityupdown.engine.handler.EngineInput;
 import cz.cvut.fel.khakikir.gravityupdown.engine.util.EngineSave;
+import cz.cvut.fel.khakikir.gravityupdown.game.gamestate.MenuState;
 import cz.cvut.fel.khakikir.gravityupdown.game.pojo.GameVars;
 
 import javax.imageio.ImageIO;
@@ -68,7 +69,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         tryLoadSave();
 
         // Init GameStateManager
-        gsm = new GameStateManager();
+        gsm = new GameStateManager(new MenuState());
 
         running = true;
     }
