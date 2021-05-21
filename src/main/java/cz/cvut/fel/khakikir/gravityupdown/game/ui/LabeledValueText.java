@@ -11,8 +11,8 @@ public class LabeledValueText {
     public int offsetY;
 
     private LabeledValueText(String label, String value) {
-        this.label = new EngineText(0, 0, 0, 8, label);
-        this.text = new EngineText(0, 0, 0, 8, value);
+        this.label = new EngineText(0, 0, 0, 0, 8, label);
+        this.text = new EngineText(0, 0, 0, 0, 8, value);
     }
 
     public LabeledValueText(String label, int value) {

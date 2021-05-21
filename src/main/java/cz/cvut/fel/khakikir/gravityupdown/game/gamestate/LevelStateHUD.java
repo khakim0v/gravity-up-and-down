@@ -48,7 +48,7 @@ public class LevelStateHUD extends SpriteGroup {
         timeIcon.position.y = MARGIN_TOP + 1;
 
         timeText = new EngineText(((double) Engine.width / 4) * 3, MARGIN_TOP,
-                100, "0", 16, Registry.Font.NOKIAFC.getPath());
+                100, 0, "0", 16, Registry.Font.NOKIAFC.getPath());
         timeText.alignment = EngineText.Alignment.RIGHT;
         timeText.setShadowSize(1);
         timeText.scale.set(1.8, 1.8);
@@ -56,7 +56,7 @@ public class LevelStateHUD extends SpriteGroup {
         timeText.position.y = MARGIN_TOP;
 
         scoreText = new EngineText(((double) Engine.width / 4) * 3, MARGIN_TOP,
-                100, "", 16, Registry.Font.NOKIAFC.getPath());
+                100, 0, "", 16, Registry.Font.NOKIAFC.getPath());
         scoreText.alignment = EngineText.Alignment.RIGHT;
         scoreText.setShadowSize(1);
         scoreText.scale.set(1.8, 1.8);
