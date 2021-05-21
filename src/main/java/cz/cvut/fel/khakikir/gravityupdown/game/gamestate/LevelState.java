@@ -9,6 +9,7 @@ import cz.cvut.fel.khakikir.gravityupdown.engine.entity.MapObject;
 import cz.cvut.fel.khakikir.gravityupdown.engine.entity.MapSprite;
 import cz.cvut.fel.khakikir.gravityupdown.engine.gamestate.GameState;
 import cz.cvut.fel.khakikir.gravityupdown.engine.tile.TileLayer;
+import cz.cvut.fel.khakikir.gravityupdown.engine.ui.EngineText;
 import cz.cvut.fel.khakikir.gravityupdown.game.LevelLoader;
 import cz.cvut.fel.khakikir.gravityupdown.game.entity.PowerUp;
 import cz.cvut.fel.khakikir.gravityupdown.game.entity.PowerUpType;
@@ -19,6 +20,7 @@ import cz.cvut.fel.khakikir.gravityupdown.game.pojo.LevelStats;
 import cz.cvut.fel.khakikir.gravityupdown.game.pojo.SavePoint;
 import cz.cvut.fel.khakikir.gravityupdown.game.util.Registry;
 import org.tiledreader.TiledObject;
+import org.tiledreader.TiledText;
 
 import java.util.Map;
 import java.util.logging.Logger;
@@ -35,6 +37,7 @@ public class LevelState extends GameState {
     // other objects
     private MapObject endZone;
     private MapGroup powerUpGroup;
+    private MapGroup textGroup;
 
     // player vars
     private MapSprite player;
@@ -101,7 +104,7 @@ public class LevelState extends GameState {
         // Player Variables
         midJumpCount = 1;
         flipCount = 0;
-        bounceCount = 5;
+        bounceCount = 0;
         smashTime = 0.0;
         timeLimit = 0;
 
@@ -114,6 +117,7 @@ public class LevelState extends GameState {
         // Level Objects
         endZone = new MapObject();
         powerUpGroup = new MapGroup();
+        textGroup = new MapGroup();
 
         // Load The Map
         // TODO: Use conversion from relative paths to absolute
@@ -156,6 +160,8 @@ public class LevelState extends GameState {
 
 
         add(powerUpGroup);
+
+        add(textGroup);
         add(endZone);
 
         add(player);
@@ -522,11 +528,11 @@ public class LevelState extends GameState {
         }
     }
 
-    public void handleLevelObject(TiledObject object) {
-        final float x = object.getX();
-        final float y = object.getY();
-        final float width = object.getWidth();
-        final float height = object.getHeight();
+    public void handleLevelObject(TiledObject object, int tileHeight) {
+        float x = object.getX();
+        float y = object.getY() - tileHeight; // objects in tiled are aligned bottom-left
+        float width = object.getWidth();
+        float height = object.getHeight();
 
         switch (object.getName()) {
             case "player" -> {
@@ -534,6 +540,7 @@ public class LevelState extends GameState {
                 return;
             }
             case "end_zone" -> {
+                y += tileHeight; // but not for end_zone
                 endZone.setPosition(x, y);
                 endZone.width = width;
                 endZone.height = height;
@@ -542,8 +549,20 @@ public class LevelState extends GameState {
             }
         }
 
+        // Text object
+        if (object.getText() != null) {
+            TiledText tiledText = object.getText();
+
+            y += tileHeight; // but not for text
+            var text = new EngineText(x, y, width, 0, 8, tiledText.getContent());
+            text.alignment = EngineText.Alignment.CENTER;
+            textGroup.add(text);
+            return;
+        }
+
+        // Other objects
         switch (object.getType()) {
-            // TODO: Text and Platform
+            // TODO: Platform
             case "powerup_flip" -> powerUpGroup.add(new PowerUp(x, y, PowerUpType.Flip));
             case "powerup_bounce" -> powerUpGroup.add(new PowerUp(x, y, PowerUpType.Bounce));
             case "powerup_smash" -> powerUpGroup.add(new PowerUp(x, y, PowerUpType.Smash));
