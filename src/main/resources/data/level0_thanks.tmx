@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.5" tiledversion="1.5.0" orientation="orthogonal" renderorder="left-down" width="42" height="22" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="35">
+ <properties>
+  <property name="time_limit" value="45"/>
+ </properties>
+ <tileset firstgid="1" name="tilemap_1" tilewidth="16" tileheight="16" tilecount="256" columns="16">
+  <image source="../tilemap_1.png" width="256" height="256"/>
+ </tileset>
+ <layer id="1" name="decoration" width="42" height="22">
+  <data encoding="base64" compression="zlib">
+   eJztzjERACAMBLBaRQoScMzK2O2vXKIgVQAAwGulA007HWia8jzpwIcuY6wB9Q==
+  </data>
+ </layer>
+ <layer id="2" name="spikes" width="42" height="22">
+  <data encoding="base64" compression="zlib">
+   eJztwTEBAAAAwqD1T20JT6AAAADgbw5wAAE=
+  </data>
+ </layer>
+ <layer id="3" name="bounce" width="42" height="22">
+  <data encoding="base64" compression="zlib">
+   eJzt0yEOADAIBEHeQlL+/8RaTAPiEmiyo04g1mAGhTMd0BTTAU10atGplTs3/3489jZ0atGp5Wlv7szo1KJT65dOr0/QdAHDOQPT
+  </data>
+ </layer>
+ <layer id="4" name="map" width="42" height="22">
+  <properties>
+   <property name="map" value="1"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJzt1sEJACAQA8Fc/02LFYiwYIIZyH9fx42kCZm7drLayUrrdNmp0107We1k/dLpcrdcpHRu7WS1k/P6P7rZAkhLALU=
+  </data>
+ </layer>
+ <objectgroup id="5" name="objects">
+  <object id="1" name="player" gid="16" x="45.3333" y="84.6667" width="16" height="16"/>
+  <object id="2" name="end_zone" x="668" y="256" width="4" height="64"/>
+  <object id="13" x="115.667" y="37.833" width="209.333" height="16">
+   <text fontfamily="Nokia Cellphone FC" pixelsize="11" wrap="1" halign="center">Well, this isn't a level really ...</text>
+  </object>
+  <object id="27" x="368.167" y="38.8333" width="209.333" height="16">
+   <text fontfamily="Nokia Cellphone FC" pixelsize="11" wrap="1" halign="center">I just would like to thank you</text>
+  </object>
+  <object id="28" x="395.834" y="58" width="205.833" height="16">
+   <text fontfamily="Nokia Cellphone FC" pixelsize="11" wrap="1" halign="center"> very much for your courses</text>
+  </object>
+  <object id="29" x="478.084" y="76.5" width="137.833" height="16">
+   <text fontfamily="Nokia Cellphone FC" pixelsize="11" wrap="1" halign="center">Both ZAL and PJV</text>
+  </object>
+  <object id="30" x="364.084" y="145" width="263.333" height="16">
+   <text fontfamily="Nokia Cellphone FC" pixelsize="11" wrap="1" halign="center">I really enjoyed every your lectures</text>
+  </object>
+  <object id="31" x="168.167" y="181.833" width="263.333" height="16">
+   <text fontfamily="Nokia Cellphone FC" pixelsize="11" wrap="1" halign="center">Even though I haven't attended all of</text>
+  </object>
+  <object id="32" x="149.5" y="200.833" width="202.333" height="16">
+   <text fontfamily="Nokia Cellphone FC" pixelsize="11" wrap="1" halign="center">your lessons this semester :)</text>
+  </object>
+  <object id="33" x="63.0002" y="265" width="270.5" height="16">
+   <text fontfamily="Nokia Cellphone FC" pixelsize="11" wrap="1" halign="center">So, THANK YOU A LOT one more time!</text>
+  </object>
+  <object id="34" x="343.75" y="299" width="275.833" height="16">
+   <text fontfamily="Nokia Cellphone FC" pixelsize="11" wrap="1" halign="center">Now you can continue to the next level ))</text>
+  </object>
+ </objectgroup>
+</map>

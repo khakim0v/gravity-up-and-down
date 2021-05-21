@@ -2,8 +2,10 @@ package cz.cvut.fel.khakikir.gravityupdown.game.util;
 
 public final class Registry {
     public enum Level {
+        LEVEL_0_THANKS("/data/level0_thanks.tmx"),
         LEVEL_0_INTRO("/data/level0_intro.tmx"),
-        LEVEL_1("/data/level1_test.tmx");
+        LEVEL_0_POWERUP("/data/level0_powerup.tmx"),
+        LEVEL_2("/data/level2.tmx");
 
         private final String path;
 

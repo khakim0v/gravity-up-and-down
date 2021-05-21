@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.5" tiledversion="1.5.0" orientation="orthogonal" renderorder="left-down" width="42" height="22" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="27">
+ <properties>
+  <property name="time_limit" value="45"/>
+ </properties>
+ <tileset firstgid="1" name="tilemap_1" tilewidth="16" tileheight="16" tilecount="256" columns="16">
+  <image source="../tilemap_1.png" width="256" height="256"/>
+ </tileset>
+ <layer id="1" name="decoration" width="42" height="22">
+  <data encoding="base64" compression="zlib">
+   eJztzjERACAMBLBaRQoScMzK2O2vXKIgVQAAwGulA007HWia8jzpwIcuY6wB9Q==
+  </data>
+ </layer>
+ <layer id="2" name="spikes" width="42" height="22">
+  <data encoding="base64" compression="zlib">
+   eJzt1EENAAAIxDC04V8UEu5JCG0yC6sC+KlDAFvSn3wKuGIApDkEpQ==
+  </data>
+ </layer>
+ <layer id="3" name="bounce" width="42" height="22">
+  <data encoding="base64" compression="zlib">
+   eJzt0zEKACAMQ9GeRbD3P6J7oDg0oYj5i1v6FiOcoj0NKEJXjijuocvOXj87N7yMFM6El5GddrK2Fc5V3OikcFY3GBt22snuFSf+/84GY8tpO3EQCBc=
+  </data>
+ </layer>
+ <layer id="4" name="map" width="42" height="22">
+  <properties>
+   <property name="map" value="1"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztlEEKACAMw7b/f9qTN0HUzE1poNcRKJ2bmSdmRKYP5VkZebL84rm6gxu7oojoRp4s8mR51fP0f8w8o/7WDuq9vme/K0/27kueCpMGo40BEQ==
+  </data>
+ </layer>
+ <objectgroup id="5" name="objects">
+  <object id="1" name="player" gid="16" x="64" y="304" width="16" height="16"/>
+  <object id="2" name="end_zone" x="668" y="256" width="4" height="64"/>
+  <object id="7" type="powerup_smash" gid="69" x="369" y="246" width="16" height="16"/>
+  <object id="8" type="powerup_save" gid="70" x="361" y="74" width="16" height="16"/>
+  <object id="13" x="71.5" y="123.833" width="209.333" height="16">
+   <text fontfamily="Nokia Cellphone FC" pixelsize="11" wrap="1" halign="center">If your BAR is EMPTY, you need</text>
+  </object>
+  <object id="15" x="74.8332" y="240.667" width="188.667" height="19">
+   <text fontfamily="Nokia Cellphone FC" pixelsize="11" wrap="1" halign="center">Press SPACE to FLIP gravity</text>
+  </object>
+  <object id="16" x="77.6668" y="139" width="194.333" height="16">
+   <text fontfamily="Nokia Cellphone FC" pixelsize="11" wrap="1" halign="center">you need to LAND before you</text>
+  </object>
+  <object id="17" x="300.667" y="40.3333" width="149.666" height="16">
+   <text fontfamily="Nokia Cellphone FC" pixelsize="11" wrap="1" halign="center">SAVE POINTS can help!</text>
+  </object>
+  <object id="18" x="476.167" y="51" width="160.666" height="16">
+   <text fontfamily="Nokia Cellphone FC" pixelsize="11" wrap="1" halign="center">Remember, you can fall</text>
+  </object>
+  <object id="19" x="509.667" y="66.5" width="91.166" height="16">
+   <text fontfamily="Nokia Cellphone FC" pixelsize="11" wrap="1" halign="center">UP and DOWN</text>
+  </object>
+  <object id="21" x="435.667" y="257" width="160.666" height="16">
+   <text fontfamily="Nokia Cellphone FC" pixelsize="11" wrap="1" halign="center">Pink POWER-UP disables</text>
+  </object>
+  <object id="22" x="448.917" y="144.5" width="112.166" height="16">
+   <text fontfamily="Nokia Cellphone FC" pixelsize="11" wrap="1" halign="center">SPIKES can hurt!</text>
+  </object>
+  <object id="23" x="454.667" y="272" width="122.166" height="16">
+   <text fontfamily="Nokia Cellphone FC" pixelsize="11" wrap="1" halign="center">SPIKES for 5 secs!</text>
+  </object>
+  <object id="25" type="powerup_smash" gid="69" x="403.5" y="245" width="16" height="16"/>
+  <object id="26" x="122.833" y="154.5" width="105.333" height="16">
+   <text fontfamily="Nokia Cellphone FC" pixelsize="11" wrap="1" halign="center"> can FLIP again.</text>
+  </object>
+ </objectgroup>
+</map>

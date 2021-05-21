@@ -4,8 +4,10 @@ import cz.cvut.fel.khakikir.gravityupdown.game.util.Registry;
 
 public final class GameVars {
     public static final Registry.Level[] LEVELS = new Registry.Level[]{
+            Registry.Level.LEVEL_0_THANKS,
             Registry.Level.LEVEL_0_INTRO,
-            Registry.Level.LEVEL_1
+            Registry.Level.LEVEL_0_POWERUP,
+            Registry.Level.LEVEL_2
     };
 
     public static int LEVEL;

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.5" tiledversion="1.5.0" orientation="orthogonal" renderorder="left-down" width="20" height="200" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="32">
+ <properties>
+  <property name="time_limit" value="60"/>
+ </properties>
+ <tileset firstgid="1" name="tilemap_1" tilewidth="16" tileheight="16" tilecount="256" columns="16">
+  <image source="../../../../../../../../../Temp/Quik/assets/tilemap_1.png" width="256" height="256"/>
+ </tileset>
+ <layer id="1" name="decoration" width="20" height="200">
+  <data encoding="base64" compression="zlib">
+   eJztw8EJADAIBLCb1dL9V6jQDfwJCST5qp/hGwAAAAAAAAAAAAAAAAAAALZ7X/4GMg==
+  </data>
+ </layer>
+ <layer id="2" name="bounce" width="20" height="200">
+  <data encoding="base64" compression="zlib">
+   eJzt0aERwDAQA8GvJTNx/yWGmgTZYMEJCS25mZl3zrcb64K3fr7oPRe83ajHmVcPy6uH5dXD8uphefWwvHpYXj0srx6WVw/Lq4fl1cPy6mF59bC8elhePSyvHpZXD8urh+XVw/LqYXn1sLx6WF49LK8ellcPy6uH5dXD8uphefWwvHpYXj0srx6WVw/Lq4fl1cPy6mF59bC8eljezR4fVhA50Q==
+  </data>
+ </layer>
+ <layer id="3" name="spikes" width="20" height="200">
+  <data encoding="base64" compression="zlib">
+   eJzt1rEVwyAMBUCvluw/VKqUxIgXgxB3JdAg9GVf155eg3st78E9gFkis63nbGS2mYNwBv9XMGYkH79kyEfFO1FDtd6sdh/O1Orj6PpXq4+j65zFPM3PG62xqu7em6fM7i29vI7a00OfPEdt76kR1CXf8H9ypQaQXYWMZr+DucXusmcMdtOTqUjuejIld8zkuwFU8wGh9hCj
+  </data>
+ </layer>
+ <layer id="4" name="map" width="20" height="200">
+  <properties>
+   <property name="map" value="1"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJztzCESACAMBDHu/5/GYCugdWRn1iZrrpx5PB6Px+PxeDwej8fj8Xg8Ho/H4/F4PB6Px+PxeDwej8fj8Xg8Ho/H4/F4PB6Px+PxeDwer+ul+NW77UdvAyD7AZc=
+  </data>
+ </layer>
+ <objectgroup id="5" name="objects">
+  <object id="1" name="player" gid="16" x="117" y="3115" width="16" height="16"/>
+  <object id="2" name="end_zone" x="44" y="8" width="232" height="4"/>
+  <object id="3" type="powerup_flip" gid="67" x="184" y="3116" width="16" height="16"/>
+  <object id="4" type="powerup_flip" gid="67" x="82" y="1920" width="16" height="16"/>
+  <object id="5" type="powerup_flip" gid="67" x="256" y="1904" width="16" height="16"/>
+  <object id="6" type="powerup_flip" gid="67" x="48" y="1904" width="16" height="16"/>
+  <object id="7" type="powerup_flip" gid="67" x="222" y="1920" width="16" height="16"/>
+  <object id="8" type="powerup_flip" gid="67" x="116" y="1936" width="16" height="16"/>
+  <object id="9" type="powerup_flip" gid="67" x="152" y="1952" width="16" height="16"/>
+  <object id="10" type="powerup_flip" gid="67" x="188" y="1936" width="16" height="16"/>
+  <object id="11" type="powerup_flip" gid="67" x="82" y="592" width="16" height="16"/>
+  <object id="12" type="powerup_flip" gid="67" x="256" y="576" width="16" height="16"/>
+  <object id="13" type="powerup_flip" gid="67" x="48" y="576" width="16" height="16"/>
+  <object id="14" type="powerup_flip" gid="67" x="222" y="592" width="16" height="16"/>
+  <object id="15" type="powerup_flip" gid="67" x="116" y="608" width="16" height="16"/>
+  <object id="16" type="powerup_flip" gid="67" x="152" y="624" width="16" height="16"/>
+  <object id="17" type="powerup_flip" gid="67" x="188" y="608" width="16" height="16"/>
+  <object id="19" type="powerup_bounce" gid="68" x="156" y="3116" width="16" height="16"/>
+  <object id="20" gid="69" x="256" y="1368" width="16" height="16"/>
+  <object id="21" type="powerup_save" gid="70" x="152" y="2048" width="16" height="16"/>
+  <object id="22" type="powerup_save" gid="70" x="152" y="697" width="16" height="16"/>
+  <object id="23" type="powerup_bounce" gid="68" x="152" y="1920" width="16" height="16"/>
+  <object id="24" type="powerup_bounce" gid="68" x="152" y="592" width="16" height="16"/>
+  <object id="25" x="93.7503" y="3143.58" width="138.916" height="16">
+   <text fontfamily="Nokia Cellphone FC" pixelsize="11" wrap="1" halign="center">Better jump quik! ;-)</text>
+  </object>
+  <object id="28" x="86.542" y="2070" width="138.916" height="16">
+   <text fontfamily="Nokia Cellphone FC" pixelsize="11" wrap="1" halign="center">Almost there!</text>
+  </object>
+  <object id="29" x="87.2087" y="647.667" width="138.916" height="16">
+   <text fontfamily="Nokia Cellphone FC" pixelsize="11" wrap="1" halign="center">You nearly got it!</text>
+  </object>
+  <object id="30" x="129.209" y="118.667" width="66.2493" height="16">
+   <text fontfamily="Nokia Cellphone FC" pixelsize="11" wrap="1" halign="center">Yeah!</text>
+  </object>
+  <object id="31" x="121.542" y="137.333" width="82.916" height="16">
+   <text fontfamily="Nokia Cellphone FC" pixelsize="11" wrap="1" halign="center">You did it!</text>
+  </object>
+ </objectgroup>
+</map>
