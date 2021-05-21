@@ -2,16 +2,20 @@ package cz.cvut.fel.khakikir.gravityupdown.game.gamestate;
 
 import cz.cvut.fel.khakikir.gravityupdown.engine.Engine;
 import cz.cvut.fel.khakikir.gravityupdown.engine.asset.audio.Sound;
+import cz.cvut.fel.khakikir.gravityupdown.engine.effects.EngineFlicker;
 import cz.cvut.fel.khakikir.gravityupdown.engine.entity.Backdrop;
+import cz.cvut.fel.khakikir.gravityupdown.engine.entity.MapGroup;
 import cz.cvut.fel.khakikir.gravityupdown.engine.entity.MapObject;
 import cz.cvut.fel.khakikir.gravityupdown.engine.entity.MapSprite;
 import cz.cvut.fel.khakikir.gravityupdown.engine.gamestate.GameState;
-import cz.cvut.fel.khakikir.gravityupdown.engine.gamestate.GameStateManager;
 import cz.cvut.fel.khakikir.gravityupdown.engine.tile.TileLayer;
 import cz.cvut.fel.khakikir.gravityupdown.game.LevelLoader;
+import cz.cvut.fel.khakikir.gravityupdown.game.entity.PowerUp;
+import cz.cvut.fel.khakikir.gravityupdown.game.entity.PowerUpType;
 import cz.cvut.fel.khakikir.gravityupdown.game.input.Input;
 import cz.cvut.fel.khakikir.gravityupdown.game.pojo.GameVars;
 import cz.cvut.fel.khakikir.gravityupdown.game.pojo.LevelStats;
+import cz.cvut.fel.khakikir.gravityupdown.game.pojo.SavePoint;
 import cz.cvut.fel.khakikir.gravityupdown.game.util.Registry;
 import org.tiledreader.TiledObject;
 
@@ -26,6 +30,7 @@ public class LevelState extends GameState {
 
     // other objects
     private MapObject endZone;
+    private MapGroup powerUpGroup;
 
     // player vars
     private MapSprite player;
@@ -38,6 +43,8 @@ public class LevelState extends GameState {
     private boolean stopActive;
     private int stopCount;
     private int preStopVelX;
+
+    private SavePoint savePoint;
 
     // sounds
     private Sound sndJump;
@@ -59,14 +66,10 @@ public class LevelState extends GameState {
     // stats
     private LevelStats stats;
 
-    public LevelState(GameStateManager gsm) {
-        super(gsm);
-    }
-
     @Override
     public void init() {
         // Signals
-        Engine.focusLost.add(this::showPauseMenu);
+        //Engine.focusLost.add(this::showPauseMenu);
         //Engine.focusLost.add(this::autoSave);
 
         // Load Sounds
@@ -84,7 +87,7 @@ public class LevelState extends GameState {
         player.loadGraphic(Registry.Image.PLAYER.getPath());
         player.width = 16;
         player.height = 16;
-        // TBD: load player animation
+        // TODO: load player animation
 
         // Player Handling
         player.acceleration.set(100, 500);
@@ -102,12 +105,16 @@ public class LevelState extends GameState {
         stopCount = 0;
         preStopVelX = 0;
 
+        savePoint = GameVars.SAVEPOINT;
+
         // Level Objects
         endZone = new MapObject();
+        powerUpGroup = new MapGroup();
 
         // Load The Map
         // TODO: Use conversion from relative paths to absolute
-        LevelLoader.loadTiledMap("D:\\[Work]\\Studium\\Projects\\B0B36PJV\\GravityUpDown\\src\\main\\resources\\data\\level1_test.tmx", this);
+        String levelMapPath = GameVars.LEVELS[GameVars.LEVEL].getPath();
+        LevelLoader.loadTiledMap(levelMapPath, this);
 
         // Camera Setup
         Engine.camera.follow(player);
@@ -143,6 +150,8 @@ public class LevelState extends GameState {
         if (decorationLayer != null)
             add(decorationLayer);
 
+
+        add(powerUpGroup);
         add(endZone);
 
         add(player);
@@ -151,6 +160,7 @@ public class LevelState extends GameState {
         add(hud);
 
         // Finally!
+        boolean restored = savePointRestore();
         Engine.camera.focusOn(player.getMidpoint());
     }
 
@@ -159,17 +169,17 @@ public class LevelState extends GameState {
 
 
 //        double velocity = 100;
-//        if (Keys.isPressed(KeyEvent.VK_LEFT)) {
+//        if (EngineInput.isPressed(KeyEvent.VK_LEFT)) {
 //            player.velocity.x = -velocity;
-//        } else if (Keys.isPressed(KeyEvent.VK_RIGHT)) {
+//        } else if (EngineInput.isPressed(KeyEvent.VK_RIGHT)) {
 //            player.velocity.x = velocity;
 //        } else {
 //            player.velocity.x = 0;
 //        }
 //
-//        if (Keys.isPressed(KeyEvent.VK_UP)) {
+//        if (EngineInput.isPressed(KeyEvent.VK_UP)) {
 //            player.velocity.y = -velocity;
-//        } else if (Keys.isPressed(KeyEvent.VK_DOWN)) {
+//        } else if (EngineInput.isPressed(KeyEvent.VK_DOWN)) {
 //            player.velocity.y = velocity;
 //        } else {
 //            player.velocity.y = -0;
@@ -187,6 +197,10 @@ public class LevelState extends GameState {
             Engine.collide(bounceLayer, player, this::onBounceHit);
         if (spikeLayer != null)
             Engine.overlap(spikeLayer, player, this::onSpikeHit);
+
+        if (powerUpGroup != null)
+            Engine.overlap(powerUpGroup, player, this::onPowerUpHit);
+
         Engine.collide(endZone, player, this::onEndZoneHit);
 
 
@@ -328,10 +342,50 @@ public class LevelState extends GameState {
 
     private void onSpikeHit(MapObject object1, MapObject object2) {
         if (smashTime > 0.0) {
-            // explode spike
+            // move through spikes
+            // TBD: explode spike
+            // stats.spikesSmashed++;
+            // sndSmash.play();
         } else if (player.alive) {
             // death
             doDie();
+        }
+    }
+
+    private void onPowerUpHit(MapObject object1, MapObject object2) {
+        if (object1 instanceof PowerUp) {
+            PowerUp powerUp = (PowerUp) object1;
+            powerUp.kill();
+
+            switch (powerUp.getType()) {
+                case Flip -> {
+                    stats.flipsCollected += 5;
+                    flipCount = flipCount + 5;
+                    hud.setFlipCount(flipCount);
+                    sndPowerUpFlip.play();
+                }
+                case Bounce -> {
+                    bounceCount++;
+                    stats.bouncesCollected++;
+                    hud.setBounceCount(bounceCount);
+                    sndPowerUpFlip.play();
+                }
+                case Smash -> {
+                    smashTime = 5.0;
+                    EngineFlicker.flicker(spikeLayer, smashTime, 0.04);
+                    sndPowerUpSmash.play();
+                }
+                case Savepoint -> {
+                    savePointSave();
+                    sndPowerUpSavePoint.play();
+                }
+                case Stop -> {
+                    stopCount++;
+                    stats.stopsCollected++;
+                    hud.setStopCount(stopCount);
+                    sndPowerUpSavePoint.play();
+                }
+            }
         }
     }
 
@@ -356,23 +410,87 @@ public class LevelState extends GameState {
         player.velocity.set(0, 0);
         player.acceleration.set(0, 0);
 
-        GameVars.LEVEL_STATS.put(stats.level, stats);
-        // fade and then reset level
+        GameVars.LEVEL_STATS[stats.level] = stats;
+        // TODO: fade and then (after some time) reset level
+        // keep save point around so we can restore it
+        GameVars.SAVEPOINT = savePoint;
+        gsm.resetCurrentState();
     }
 
     private void finishLevel() {
         stats.levelPassed = true;
-        GameVars.LEVEL_STATS.put(stats.level, stats);
+        GameVars.LEVEL_STATS[stats.level] = stats;
         GameVars.SCORE += LevelStats.calculatePoints(stats, true);
-        //GameVars.LEVEL = nextLevel();
+        GameVars.LEVEL++;
 
         System.out.printf("Level '%s' finished, starting Level '%s'%n",
                 stats.level, GameVars.LEVEL);
+        GameVars.SAVEPOINT = null;
 
-        // fade, then switch state
+        // TODO: Autosave
+
+        // TODO: fade, then switch state
+        var state = new LevelStatsState(stats, () -> {
+            var end = GameVars.LEVEL == GameVars.LEVELS.length;
+            if (end) {
+                //Engine.focusLost.remove(Game.autoSave);
+                //Game.autoSaveClear();
+            }
+
+            gsm.switchState(end ? new MenuState() : new LevelState());
+        });
+
+        gsm.switchState(state);
     }
 
+    /* Signals */
     private void showPauseMenu() {
+        // PlayStateMenu
+    }
+
+    private void onRestart() {
+        player.alive = false;
+        GameVars.SAVEPOINT = null; // invalidate
+        // TODO: Add fade timeout
+        gsm.resetCurrentState();
+    }
+
+    private void onLeave() {
+        player.active = false;
+        GameVars.SAVEPOINT = null; // invalidate
+
+        // Engine.focusLost.remove(this::autoSave);
+        // game.autoSaveClear();
+
+        gsm.switchState(new MenuState());
+    }
+
+    /* Save Points Handling */
+    private void savePointSave() {
+        if (savePoint == null)
+            savePoint = new SavePoint();
+
+        savePoint.position.set(player.position.x, player.position.y);
+        savePoint.velocity.set(player.velocity.x, player.velocity.y);
+        savePoint.acceleration.set(player.acceleration.x, player.acceleration.y);
+        savePoint.flipY = player.flipY;
+        savePoint.facing = player.facing;
+        savePoint.timeElapsed = stats.elapsedTime;
+    }
+
+    private boolean savePointRestore() {
+        if (savePoint == null)
+            return false;
+
+        player.facing = savePoint.facing;
+        player.flipY = savePoint.flipY;
+        player.acceleration.set(savePoint.acceleration.x, savePoint.acceleration.y);
+        player.velocity.set(savePoint.velocity.x, savePoint.velocity.y);
+        player.setPosition(savePoint.position.x, savePoint.position.y);
+
+        stats.elapsedTime = savePoint.timeElapsed;
+
+        return true;
     }
 
     /* Level Handling */
@@ -413,9 +531,12 @@ public class LevelState extends GameState {
         }
 
         switch (object.getType()) {
-            case "powerup_flip" -> {
-
-            }
+            // TODO: Text and Platform
+            case "powerup_flip" -> powerUpGroup.add(new PowerUp(x, y, PowerUpType.Flip));
+            case "powerup_bounce" -> powerUpGroup.add(new PowerUp(x, y, PowerUpType.Bounce));
+            case "powerup_smash" -> powerUpGroup.add(new PowerUp(x, y, PowerUpType.Smash));
+            case "powerup_save" -> powerUpGroup.add(new PowerUp(x, y, PowerUpType.Savepoint));
+            case "powerup_stop" -> powerUpGroup.add(new PowerUp(x, y, PowerUpType.Stop));
         }
     }
 }
