@@ -6,6 +6,8 @@ import cz.cvut.fel.khakikir.gravityupdown.engine.entity.Backdrop;
 import cz.cvut.fel.khakikir.gravityupdown.engine.gamestate.GameState;
 import cz.cvut.fel.khakikir.gravityupdown.engine.ui.EngineText;
 import cz.cvut.fel.khakikir.gravityupdown.game.input.Input;
+import cz.cvut.fel.khakikir.gravityupdown.game.main.GamePanel;
+import cz.cvut.fel.khakikir.gravityupdown.game.pojo.GameVars;
 import cz.cvut.fel.khakikir.gravityupdown.game.ui.Button;
 import cz.cvut.fel.khakikir.gravityupdown.game.util.Registry;
 
@@ -43,7 +45,9 @@ public class MenuState extends GameState {
         int btnX = 0;
         int btnY = 110;
         int btnOffsetY = 24;
-        Button btnStart = new Button(btnX, btnY + btnOffsetY * 0, "Start Game", true, this::onStartGame);
+
+        String btnStartText = GameVars.RESUMED ? "Resume Game" : "Start Game";
+        Button btnStart = new Button(btnX, btnY + btnOffsetY * 0, btnStartText, true, this::onStartGame);
         Button btnHighScore = new Button(btnX, btnY + btnOffsetY * 1, "High Score", false, this::onHighScore);
         Button btnSettings = new Button(btnX, btnY + btnOffsetY * 2, "Settings", false, this::onSettings);
         Button btnQuit = new Button(btnX, btnY + btnOffsetY * 3, "Quit", true, this::onQuit);
@@ -87,6 +91,7 @@ public class MenuState extends GameState {
 
     /* Buttons callbacks */
     private void onStartGame() {
+        GamePanel.autoSave();
         gsm.switchState(new InstructionsState());
     }
 

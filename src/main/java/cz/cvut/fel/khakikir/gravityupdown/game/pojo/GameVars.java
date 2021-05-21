@@ -1,5 +1,6 @@
 package cz.cvut.fel.khakikir.gravityupdown.game.pojo;
 
+import cz.cvut.fel.khakikir.gravityupdown.engine.util.EngineSave;
 import cz.cvut.fel.khakikir.gravityupdown.game.util.Registry;
 
 public final class GameVars {
@@ -15,7 +16,7 @@ public final class GameVars {
     //public static List<HighScore> HIGHSCORES;
     public static int SCORE = 0;
     //public static var SAVES;
-    //public static var AUTOSAVE;
+    public static EngineSave AUTOSAVE;
     public static boolean RESUMED;
     public static SavePoint SAVEPOINT;
 

@@ -4,6 +4,8 @@ import cz.cvut.fel.khakikir.gravityupdown.engine.Engine;
 import cz.cvut.fel.khakikir.gravityupdown.engine.entity.Camera;
 import cz.cvut.fel.khakikir.gravityupdown.engine.gamestate.GameStateManager;
 import cz.cvut.fel.khakikir.gravityupdown.engine.handler.EngineInput;
+import cz.cvut.fel.khakikir.gravityupdown.engine.util.EngineSave;
+import cz.cvut.fel.khakikir.gravityupdown.game.pojo.GameVars;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -57,9 +59,15 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         graphics = (Graphics2D) bufferedImage.getGraphics();
         setCustomCursor();
 
+        // Init Engine variables
         Engine.width = WINDOW_WIDTH;
         Engine.height = WINDOW_HEIGHT;
         Engine.camera = new Camera(GamePanel.WINDOW_WIDTH, GamePanel.WINDOW_HEIGHT);
+
+        // Load save from file
+        tryLoadSave();
+
+        // Init GameStateManager
         gsm = new GameStateManager();
 
         running = true;
@@ -73,8 +81,49 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
             Cursor cursor = toolkit.createCustomCursor(image, new Point(0, 0), "Pixel Cursor");
             setCursor(cursor);
         } catch (IOException e) {
-            e.printStackTrace(); // FIXME
+            LOGGER.warning("Can't load custom cursor");
         }
+    }
+
+    private void tryLoadSave() {
+        attachAutoSave();
+        if (GameVars.AUTOSAVE.get("active") != null && Boolean.parseBoolean(GameVars.AUTOSAVE.get("active"))) {
+            GameVars.SCORE = Integer.parseInt(GameVars.AUTOSAVE.get("score"));
+            GameVars.LEVEL = Integer.parseInt(GameVars.AUTOSAVE.get("level"));
+            LOGGER.info("Found active AUTOSAVE. Loading it...");
+
+            GameVars.RESUMED = true;
+        } else {
+            GameVars.RESUMED = false;
+        }
+    }
+
+    private static void attachAutoSave() {
+        if (GameVars.SAVEPOINT != null) {
+            return;
+        }
+
+        LOGGER.info("Creating and binding AUTOSAVE");
+        GameVars.AUTOSAVE = new EngineSave();
+        GameVars.AUTOSAVE.bind("gravity-autosave");
+    }
+
+    public static void autoSave()
+    {
+        LOGGER.info(String.format("Saving AUTOSAVE: Score = %s,  Level Index = %s", GameVars.SCORE, GameVars.LEVEL));
+        GameVars.AUTOSAVE.put("active", Boolean.toString(true));
+        GameVars.AUTOSAVE.put("level", Integer.toString(GameVars.LEVEL));
+        GameVars.AUTOSAVE.put("score",  Integer.toString(GameVars.SCORE));
+        GameVars.AUTOSAVE.flush();
+    }
+
+    public static void clearAutoSave()
+    {
+        LOGGER.info("Clearing AUTOSAVE");
+        GameVars.AUTOSAVE.put("active", Boolean.toString(false));
+        GameVars.AUTOSAVE.put("level", Integer.toString(0));
+        GameVars.AUTOSAVE.put("score",  Integer.toString(0));
+        GameVars.AUTOSAVE.flush();
     }
 
     @Override

@@ -27,7 +27,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 public class LevelState extends GameState {
-    private static final Logger LOGGER = Logger.getLogger(GamePanel.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(LevelState.class.getName());
 
     // tilemap layers
     private TileLayer wallLayer;
@@ -121,7 +121,6 @@ public class LevelState extends GameState {
         textGroup = new MapGroup();
 
         // Load The Map
-        // TODO: Use conversion from relative paths to absolute
         String levelMapPath = GameVars.LEVELS[GameVars.LEVEL].getPath();
         LevelLoader.loadTiledMap(levelMapPath, this);
 
@@ -173,28 +172,10 @@ public class LevelState extends GameState {
         // Finally!
         boolean restored = savePointRestore();
         Engine.camera.focusOn(player.getMidpoint());
-    }
 
-    @Override
-    public void handleInput() {
-
-
-//        double velocity = 100;
-//        if (EngineInput.isPressed(KeyEvent.VK_LEFT)) {
-//            player.velocity.x = -velocity;
-//        } else if (EngineInput.isPressed(KeyEvent.VK_RIGHT)) {
-//            player.velocity.x = velocity;
-//        } else {
-//            player.velocity.x = 0;
-//        }
-//
-//        if (EngineInput.isPressed(KeyEvent.VK_UP)) {
-//            player.velocity.y = -velocity;
-//        } else if (EngineInput.isPressed(KeyEvent.VK_DOWN)) {
-//            player.velocity.y = velocity;
-//        } else {
-//            player.velocity.y = -0;
-//        }
+        if (GameVars.RESUMED) {
+            GameVars.RESUMED = false;
+        }
     }
 
     @Override
@@ -441,7 +422,7 @@ public class LevelState extends GameState {
         LOGGER.info(String.format("Level '%s' finished, starting Level '%s'", stats.level, GameVars.LEVEL));
         GameVars.SAVEPOINT = null;
 
-        // TODO: Autosave
+        GamePanel.autoSave();
 
         // TODO: fade, then switch state
         EngineFlicker.flicker(player, 1, 0.04);
@@ -450,7 +431,7 @@ public class LevelState extends GameState {
                 var end = GameVars.LEVEL == GameVars.LEVELS.length;
                 if (end) {
                     //Engine.focusLost.remove(Game.autoSave);
-                    //Game.autoSaveClear();
+                    GamePanel.clearAutoSave();
                 }
 
                 gsm.switchState(end ? new MenuState() : new LevelState());
@@ -481,7 +462,7 @@ public class LevelState extends GameState {
         GameVars.SAVEPOINT = null; // invalidate
 
         // Engine.focusLost.remove(this::autoSave);
-        // game.autoSaveClear();
+        GamePanel.clearAutoSave();
 
         gsm.switchState(new MenuState());
     }
