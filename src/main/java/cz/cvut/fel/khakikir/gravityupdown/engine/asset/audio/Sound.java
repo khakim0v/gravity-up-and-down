@@ -2,6 +2,7 @@ package cz.cvut.fel.khakikir.gravityupdown.engine.asset.audio;
 
 import com.github.trilarion.sound.vorbis.sampled.spi.VorbisAudioFileReader;
 import cz.cvut.fel.khakikir.gravityupdown.engine.asset.ResourceException;
+import cz.cvut.fel.khakikir.gravityupdown.engine.util.Procedure;
 
 import javax.sound.sampled.*;
 import java.io.BufferedInputStream;
@@ -9,6 +10,7 @@ import java.io.InputStream;
 
 public class Sound {
     private Clip clip;
+    public Procedure onComplete;
 
     public static Sound load(String path) {
         Sound sound = new Sound();
@@ -45,8 +47,17 @@ public class Sound {
             AudioInputStream dais = AudioSystem.getAudioInputStream(decodeFormat, ais);
             this.clip = AudioSystem.getClip();
             this.clip.open(dais);
+            this.clip.addLineListener(this::onLineEvent);
         } catch (Exception e) {
             throw new ResourceException(e);
+        }
+    }
+
+    private void onLineEvent(LineEvent event) {
+        if (event.getType() == LineEvent.Type.STOP) {
+            if (onComplete != null) {
+                onComplete.run();
+            }
         }
     }
 
@@ -98,5 +109,9 @@ public class Sound {
                 clip.stop();
            // }
         }
+    }
+
+    public boolean isPlaying() {
+        return clip.isRunning();
     }
 }
