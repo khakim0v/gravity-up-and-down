@@ -3,7 +3,7 @@ package cz.cvut.fel.khakikir.gravityupdown.game.main;
 import cz.cvut.fel.khakikir.gravityupdown.engine.Engine;
 import cz.cvut.fel.khakikir.gravityupdown.engine.entity.Camera;
 import cz.cvut.fel.khakikir.gravityupdown.engine.gamestate.GameStateManager;
-import cz.cvut.fel.khakikir.gravityupdown.engine.handler.Keys;
+import cz.cvut.fel.khakikir.gravityupdown.engine.handler.EngineInput;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -124,7 +124,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         Engine.elapsed = delta;
         gsm.update();
         Engine.camera.update();
-        Keys.update();
+        EngineInput.update();
     }
 
     private void draw() {
@@ -147,18 +147,21 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 
     @Override
     public void keyPressed(KeyEvent e) {
-        Keys.setState(e.getKeyCode(), true);
+        EngineInput.setKeyState(e.getKeyCode(), true);
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-        Keys.setState(e.getKeyCode(), false);
+        EngineInput.setKeyState(e.getKeyCode(), false);
     }
 
     /* Mouse events (MouseListener methods) */
     @Override
     public void mouseClicked(MouseEvent e) {
-        System.out.println(e);
+        Point point = e.getPoint();
+        point.x /= WINDOW_SCALE;
+        point.y /= WINDOW_SCALE;
+        EngineInput.setMouseClickPosition(point);
     }
 
     @Override
