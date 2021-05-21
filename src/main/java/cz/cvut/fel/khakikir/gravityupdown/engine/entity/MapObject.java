@@ -5,6 +5,7 @@ import cz.cvut.fel.khakikir.gravityupdown.engine.math.EngineVelocity;
 import cz.cvut.fel.khakikir.gravityupdown.engine.math.Vec2D;
 import cz.cvut.fel.khakikir.gravityupdown.engine.tile.TileLayer;
 
+import java.awt.*;
 import java.awt.geom.Rectangle2D;
 
 @SuppressWarnings({"DuplicatedCode", "ConstantConditions"})
@@ -230,6 +231,11 @@ public class MapObject extends MapBasic {
             position.x = ((double) Engine.width / 2) - (width / 2);
         if (centerY)
             position.y = ((double) Engine.height / 2) - (height / 2);
+    }
+
+    public Rectangle2D getBounds() {
+        Vec2D position = getScreenPosition();
+        return new Rectangle((int) position.x, (int) position.y, (int) width, (int) height);
     }
 
     /**
