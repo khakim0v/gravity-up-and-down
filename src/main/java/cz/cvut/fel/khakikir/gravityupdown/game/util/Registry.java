@@ -47,6 +47,8 @@ public final class Registry {
         PLAYER("/images/player_single.png"),
         SCANLINES("/images/scanlines.png"),
         TILESET("/images/tileset.png"),
+        BUTTON("/ui/button.png"),
+        INSTRUCTIONS("/images/instructions.png"),
 
         // HUD
         HUD_BAR("/images/hud_bar.png"),
