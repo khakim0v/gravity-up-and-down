@@ -18,7 +18,7 @@ public class InstructionsState extends GameState {
         screen.screenCenter(true, true);
         add(screen);
 
-        new EngineTimer(null).start(4, timer -> {
+        new EngineTimer(null).start(5, timer -> {
             doClose();
         }, 0);
     }
