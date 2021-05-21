@@ -20,10 +20,6 @@ public class MenuState extends GameState {
 
     private boolean isMuted;
 
-    public MenuState(GameStateManager gsm) {
-        super(gsm);
-    }
-
     @Override
     public void init() {
         // TBD: Camera fade

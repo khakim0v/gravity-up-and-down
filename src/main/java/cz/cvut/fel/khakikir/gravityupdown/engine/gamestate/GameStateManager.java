@@ -13,7 +13,7 @@ public class GameStateManager {
     private GameState currentState;
 
     public GameStateManager() {
-        switchState(new MenuState(this));
+        switchState(new MenuState());
     }
 
     public void switchState(GameState state) {
@@ -25,6 +25,7 @@ public class GameStateManager {
         state.init();
 
         // Finally assign and create the new state
+        state.gsm = this;
         currentState = state;
     }
 
@@ -36,7 +37,7 @@ public class GameStateManager {
         GameState state = null;
         try {
             Constructor<?> constructor = currentState.getClass().getConstructors()[0];
-            state = (GameState) constructor.newInstance(this);
+            state = (GameState) constructor.newInstance();
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }

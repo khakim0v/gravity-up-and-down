@@ -52,12 +52,12 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
         System.out.println("GamePanel initialization");
         bufferedImage = new BufferedImage(WINDOW_WIDTH, WINDOW_HEIGHT, BufferedImage.TYPE_INT_RGB);
         graphics = (Graphics2D) bufferedImage.getGraphics();
-        gsm = new GameStateManager();
         setCustomCursor();
 
         Engine.width = WINDOW_WIDTH;
         Engine.height = WINDOW_HEIGHT;
         Engine.camera = new Camera(GamePanel.WINDOW_WIDTH, GamePanel.WINDOW_HEIGHT);
+        gsm = new GameStateManager();
 
         running = true;
     }
