@@ -10,6 +10,7 @@ import cz.cvut.fel.khakikir.gravityupdown.engine.entity.MapSprite;
 import cz.cvut.fel.khakikir.gravityupdown.engine.gamestate.GameState;
 import cz.cvut.fel.khakikir.gravityupdown.engine.tile.TileLayer;
 import cz.cvut.fel.khakikir.gravityupdown.engine.ui.EngineText;
+import cz.cvut.fel.khakikir.gravityupdown.engine.util.EngineTimer;
 import cz.cvut.fel.khakikir.gravityupdown.game.LevelLoader;
 import cz.cvut.fel.khakikir.gravityupdown.game.entity.PowerUp;
 import cz.cvut.fel.khakikir.gravityupdown.game.entity.PowerUpType;
@@ -443,17 +444,21 @@ public class LevelState extends GameState {
         // TODO: Autosave
 
         // TODO: fade, then switch state
-        var state = new LevelStatsState(stats, () -> {
-            var end = GameVars.LEVEL == GameVars.LEVELS.length;
-            if (end) {
-                //Engine.focusLost.remove(Game.autoSave);
-                //Game.autoSaveClear();
-            }
+        EngineFlicker.flicker(player, 1, 0.04);
+        new EngineTimer(null).start(1, timer -> {
+            var state = new LevelStatsState(stats, () -> {
+                var end = GameVars.LEVEL == GameVars.LEVELS.length;
+                if (end) {
+                    //Engine.focusLost.remove(Game.autoSave);
+                    //Game.autoSaveClear();
+                }
 
-            gsm.switchState(end ? new MenuState() : new LevelState());
-        });
+                gsm.switchState(end ? new MenuState() : new LevelState());
+            });
 
-        gsm.switchState(state);
+            gsm.switchState(state);
+        }, 0);
+
     }
 
     /* Signals */
