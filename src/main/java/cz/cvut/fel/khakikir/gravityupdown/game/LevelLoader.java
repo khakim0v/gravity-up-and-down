@@ -39,10 +39,14 @@ public class LevelLoader {
                 Integer[][] mapData = new Integer[map.getHeight()][map.getWidth()];
 
                 Set<Point> points = tiledTileLayer.getTileLocations();
-                points.forEach(p -> {
+                if (points.size() <= 0) {
+                    continue;
+                }
+
+                for (Point p : points) {
                     TiledTile tile = tiledTileLayer.getTile(p.x, p.y);
                     mapData[p.y][p.x] = tile.getID();
-                });
+                }
 
                 BufferedImage tileSetImage = Sprite.loadImage(TILESET_PATH);
                 TileLayer tileLayer = new TileLayer();
@@ -54,7 +58,7 @@ public class LevelLoader {
             } else if (layer instanceof TiledObjectLayer) {
                 TiledObjectLayer tiledObjectLayer = (TiledObjectLayer) layer;
                 for (var tiledObject : tiledObjectLayer.getObjects()) {
-                    state.handleLevelObject(tiledObject);
+                    state.handleLevelObject(tiledObject, map.getTileHeight());
                 }
             }
         }
