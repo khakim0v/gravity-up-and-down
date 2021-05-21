@@ -85,7 +85,7 @@ public class LevelStatsState extends GameState {
             yPos += 20;
         }
 
-        var btn = new Button(10, 10, "Continue", onContinue);
+        var btn = new Button(10, 10, "Continue", true, onContinue);
         btn.position.x = Engine.width - btn.width - 10;
         btn.position.y = Engine.height - btn.height - 10;
         add(btn);

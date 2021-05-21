@@ -50,6 +50,7 @@ public final class Registry {
         SCANLINES("/images/scanlines.png"),
         TILESET("/images/tileset.png"),
         BUTTON("/ui/button.png"),
+        BUTTON_DISABLED("/ui/button_disabled.png"),
         INSTRUCTIONS("/images/instructions.png"),
 
         // HUD

@@ -9,8 +9,9 @@ import java.awt.*;
 public class EngineButton extends MapSprite {
     private EngineText label;
     protected Procedure onDown;
+    private boolean enabled;
 
-    public EngineButton(double x, double y, String path, String text) {
+    public EngineButton(double x, double y, String path, String text, boolean enabled) {
         super(x, y, path);
 
         // Since this is a UI element, the default scrollFactor is (0, 0)
@@ -20,6 +21,8 @@ public class EngineButton extends MapSprite {
         this.label.alignment = EngineText.Alignment.CENTER;
         this.label.borderSize = 1;
         this.label.position = position;
+
+        this.enabled = enabled;
     }
 
     /**
@@ -29,7 +32,7 @@ public class EngineButton extends MapSprite {
     public void update() {
         super.update();
 
-        if (visible) {
+        if (visible && enabled) {
             if (EngineInput.mouseJustPressed()) {
                 Point point = EngineInput.getMouseClickPosition();
                 boolean overlaps = getBounds().contains(point);

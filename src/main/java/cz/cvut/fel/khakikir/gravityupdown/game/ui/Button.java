@@ -8,9 +8,10 @@ import cz.cvut.fel.khakikir.gravityupdown.game.util.Registry;
 public class Button extends EngineButton {
     public Sound sndClick;
     private final Procedure callback;
+    private boolean enabled;
 
-    public Button(double x, double y, String text, Procedure callback) {
-        super(x, y, Registry.Image.BUTTON.getPath(), text);
+    public Button(double x, double y, String text, boolean enabled, Procedure callback) {
+        super(x, y, enabled ? Registry.Image.BUTTON.getPath() : Registry.Image.BUTTON_DISABLED.getPath(), text, enabled);
 
         this.sndClick = Sound.load(Registry.Sound.SFX_UI.getPath());
         this.callback = callback;

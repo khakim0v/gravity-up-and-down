@@ -43,10 +43,10 @@ public class MenuState extends GameState {
         int btnX = 0;
         int btnY = 110;
         int btnOffsetY = 24;
-        Button btnStart = new Button(btnX, btnY + btnOffsetY * 0, "Start Game", this::onStartGame);
-        Button btnHighScore = new Button(btnX, btnY + btnOffsetY * 1, "High Score", this::onHighScore);
-        Button btnSettings = new Button(btnX, btnY + btnOffsetY * 2, "Settings", this::onSettings);
-        Button btnQuit = new Button(btnX, btnY + btnOffsetY * 3, "Quit", this::onQuit);
+        Button btnStart = new Button(btnX, btnY + btnOffsetY * 0, "Start Game", true, this::onStartGame);
+        Button btnHighScore = new Button(btnX, btnY + btnOffsetY * 1, "High Score", false, this::onHighScore);
+        Button btnSettings = new Button(btnX, btnY + btnOffsetY * 2, "Settings", false, this::onSettings);
+        Button btnQuit = new Button(btnX, btnY + btnOffsetY * 3, "Quit", true, this::onQuit);
 
         btnStart.screenCenter(true, false);
         btnHighScore.screenCenter(true, false);
