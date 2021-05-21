@@ -8,7 +8,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class EngineTimerManager extends MapBasic {
-    // TODO: Remove all timers when switching state (preSwitch)
     private final List<EngineTimer> timers = new ArrayList<>();
 
     public EngineTimerManager() {
