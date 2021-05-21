@@ -13,6 +13,7 @@ import cz.cvut.fel.khakikir.gravityupdown.game.LevelLoader;
 import cz.cvut.fel.khakikir.gravityupdown.game.entity.PowerUp;
 import cz.cvut.fel.khakikir.gravityupdown.game.entity.PowerUpType;
 import cz.cvut.fel.khakikir.gravityupdown.game.input.Input;
+import cz.cvut.fel.khakikir.gravityupdown.game.main.GamePanel;
 import cz.cvut.fel.khakikir.gravityupdown.game.pojo.GameVars;
 import cz.cvut.fel.khakikir.gravityupdown.game.pojo.LevelStats;
 import cz.cvut.fel.khakikir.gravityupdown.game.pojo.SavePoint;
@@ -20,8 +21,11 @@ import cz.cvut.fel.khakikir.gravityupdown.game.util.Registry;
 import org.tiledreader.TiledObject;
 
 import java.util.Map;
+import java.util.logging.Logger;
 
 public class LevelState extends GameState {
+    private static final Logger LOGGER = Logger.getLogger(GamePanel.class.getName());
+
     // tilemap layers
     private TileLayer wallLayer;
     private TileLayer bounceLayer;
@@ -353,6 +357,7 @@ public class LevelState extends GameState {
     }
 
     private void onPowerUpHit(MapObject object1, MapObject object2) {
+        LOGGER.info("Player hits a power up");
         if (object1 instanceof PowerUp) {
             PowerUp powerUp = (PowerUp) object1;
             powerUp.kill();
@@ -393,6 +398,7 @@ public class LevelState extends GameState {
         if (!player.alive)
             return;
 
+        LOGGER.info("Player reaches an end zone");
         player.alive = false;
         player.velocity.set(0, 0);
 
@@ -403,6 +409,7 @@ public class LevelState extends GameState {
     private void doDie() {
         if (!player.alive)
             return;
+        LOGGER.info("Player died, restarting current level");
 
         sndDie.play();
 
@@ -418,13 +425,13 @@ public class LevelState extends GameState {
     }
 
     private void finishLevel() {
+        LOGGER.info(String.format("Finishing level '%s'", stats.level));
         stats.levelPassed = true;
         GameVars.LEVEL_STATS[stats.level] = stats;
         GameVars.SCORE += LevelStats.calculatePoints(stats, true);
         GameVars.LEVEL++;
 
-        System.out.printf("Level '%s' finished, starting Level '%s'%n",
-                stats.level, GameVars.LEVEL);
+        LOGGER.info(String.format("Level '%s' finished, starting Level '%s'", stats.level, GameVars.LEVEL));
         GameVars.SAVEPOINT = null;
 
         // TODO: Autosave
@@ -445,10 +452,12 @@ public class LevelState extends GameState {
 
     /* Signals */
     private void showPauseMenu() {
+        LOGGER.info("Showing the pause menu");
         // PlayStateMenu
     }
 
     private void onRestart() {
+        LOGGER.info("Restart button clicked, restarting the level...");
         player.alive = false;
         GameVars.SAVEPOINT = null; // invalidate
         // TODO: Add fade timeout
@@ -456,6 +465,7 @@ public class LevelState extends GameState {
     }
 
     private void onLeave() {
+        LOGGER.info("Leave button clicked, leaving to the main menu...");
         player.active = false;
         GameVars.SAVEPOINT = null; // invalidate
 
@@ -467,6 +477,7 @@ public class LevelState extends GameState {
 
     /* Save Points Handling */
     private void savePointSave() {
+        LOGGER.info("Saving the savepoint...");
         if (savePoint == null)
             savePoint = new SavePoint();
 
@@ -482,6 +493,7 @@ public class LevelState extends GameState {
         if (savePoint == null)
             return false;
 
+        LOGGER.info("Restoring the savepoint...");
         player.facing = savePoint.facing;
         player.flipY = savePoint.flipY;
         player.acceleration.set(savePoint.acceleration.x, savePoint.acceleration.y);

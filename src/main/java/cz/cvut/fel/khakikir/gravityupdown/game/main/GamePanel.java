@@ -12,8 +12,11 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.logging.Logger;
 
 public class GamePanel extends JPanel implements Runnable, KeyListener, MouseListener, FocusListener {
+    private static final Logger LOGGER = Logger.getLogger(GamePanel.class.getName());
+
     private static final int WINDOW_WIDTH = 320;
     private static final int WINDOW_HEIGHT = 240;
     public static final int WINDOW_SCALE = 3;
@@ -49,7 +52,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
     }
 
     private void initialize() {
-        System.out.println("GamePanel initialization");
+        LOGGER.info("GamePanel initialization");
         bufferedImage = new BufferedImage(WINDOW_WIDTH, WINDOW_HEIGHT, BufferedImage.TYPE_INT_RGB);
         graphics = (Graphics2D) bufferedImage.getGraphics();
         setCustomCursor();
@@ -76,14 +79,14 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
 
     @Override
     public void run() {
-        System.out.println("GamePanel Thread started");
+        LOGGER.info("GamePanel Thread started");
         initialize();
 
         // time and timestamp variables in nanoseconds
         long currentTime = System.nanoTime();
         final double dt = 1.0 / 60.0;
 
-        System.out.println("Game loop starting");
+        LOGGER.info("Game loop starting");
         while (running) { // game loop
             long newTime = System.nanoTime();
             double sinceLastFrameTime = (double) (newTime - currentTime) / 1_000_000_000;
@@ -109,7 +112,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, MouseLis
                 try {
                     Thread.sleep(waitTime);
                 } catch (InterruptedException e) {
-                    System.out.println("Game loop sleep interrupted");
+                    LOGGER.severe("Game loop sleep interrupted");
                 }
             }
         }
