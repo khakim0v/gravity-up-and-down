@@ -1,9 +1,15 @@
 # Gravity Up&Down
 > Semester project for B0B36PJV (Programming in Java) course at Czech Technical University.
 
+
 **Gravity Up&Down** is a desktop platform game written in Java using the Java Swing library. The game's objective is to move the player character from the starting point of a level to the end. Every level features several spikes that a player should avoid. Various collectables are scattered around the level — power-ups that can help a user to pass the level. A distinctive feature of the game is the ability to flip gravity so that the hero can move upside down.
 
 The user can create, edit, and play his own levels. **Tilemaps** technique is used to store information about objects.
+
+## Screenshots
+|Main Menu | Gameplay |
+| ------ | ------ |
+| ![tiled_example_1](docs/mainmenu.png) | ![tiled_example_2](docs/gameplay.png) |
 
 ## User Manual
 ### Main Menu
